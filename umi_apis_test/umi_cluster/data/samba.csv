@@ -1,2 +1,0 @@
-req_host,username,smbpasswd,sharename,create_mode,dir_mode,allow_hosts,deny_hosts
-127.0.0.1,user-01,123456,share-01,0644,0755,172.169.100.11,192.168.2.0/24
