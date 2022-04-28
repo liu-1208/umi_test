@@ -1,0 +1,195 @@
+
+config:
+    name: "Cluster Brick Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host: ${P(umi_cluster/data/storage.csv)}
+    variables:
+        vol_name: vol-01
+teststeps:
+
+-
+    name: Cluster Volume Brick Add
+    request:
+        method: POST
+        url: "/cluster/volume/brick/add"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "bricks": [
+                "$host01:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host02:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host03:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name"
+            ],
+            "is_force": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Brick Replace Commit
+    request:
+        method: POST
+        url: "/cluster/volume/brick/replace/commit"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "source_brick": "$host01:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name"
+            "new_brick": "$host01:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Brick Remove Start
+    request:
+        method: POST
+        url: "/cluster/volume/brick/remove/start"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "bricks": [
+                "$host01:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+                "$host02:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host03:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name"
+            ],
+            "replica": 3
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Brick Remove Stop
+    request:
+        method: POST
+        url: "/cluster/volume/brick/remove/stop"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "bricks": [
+                "$host01:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+                "$host02:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host03:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name"
+            ],
+            "replica": 3
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Brick Remove Status
+    request:
+        method: POST
+        url: "/cluster/volume/brick/remove/status"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "bricks": [
+                "$host01:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+                "$host02:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host03:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name"
+            ],
+            "replica": 3
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Brick Remove Commit
+    request:
+        method: POST
+        url: "/cluster/volume/brick/remove/commit"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "bricks": [
+                "$host01:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+                "$host02:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host03:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name"
+            ],
+            "replica": 3
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Brick Remove Force
+    request:
+        method: POST
+        url: "/cluster/volume/brick/remove/force"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "bricks": [
+                "$host01:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+                "$host02:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host03:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name"
+            ],
+            "replica": 3
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Cluster Volume Brick Add
+    request:
+        method: POST
+        url: "/cluster/volume/brick/add"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "bricks": [
+                "$host01:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host02:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host03:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name"
+            ],
+            "is_force": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+-
+    name: Cluster Volume Brick Force Replace
+    request:
+        method: POST
+        url: "/cluster/volume/brick/force_replace"
+        json: {
+            "vol_name": "$vol_name",
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Brick Reset Start
+    request:
+        method: POST
+        url: "/cluster/volume/brick/reset/start"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "source_brick": "$host01:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Brick Reset Commit
+    request:
+        method: POST
+        url: "/cluster/volume/brick/reset/commit"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "source_brick": "$host02:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+            "new_brick": "$host01:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Brick Clean
+    request:
+        method: POST
+        url: "/cluster/volume/brick/clean"
+        json: {
+            "req_host": "$req_host",
+            "brick_path": "/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+            "is_clean_data": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+

@@ -1,0 +1,108 @@
+module = "CIFS"
+interface_names = [
+    "Cifs_Service_Status",
+    "Cifs_Service_Init",
+    "Cifs_Service_Disable",
+    "Cifs_Service_Enable",
+    "Cifs_User_List",
+    "Cifs_User_Update",
+    "Cifs_User_Delete",
+    "Cifs_Share_List",
+    "Cifs_Share_Update",
+    "Cifs_Share_Delete",
+    "Cifs_Client_Status",
+#    "Cifs_Config_Export",
+#    "Cifs_Config_Import"
+]
+
+
+[Cifs_Service_Status]
+interface_desc = "检查Samba服务状态."
+interface_path = "/cifs/service/status"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Cifs_Service_Init]
+interface_desc = "Samba服务初始化."
+interface_path = "/cifs/service/init"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Cifs_Service_Disable]
+interface_desc = "停止Samba服务."
+interface_path = "/cifs/service/disable"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Cifs_Service_Enable]
+interface_desc = "开启Samba服务."
+interface_path = "/cifs/service/enable"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Cifs_User_List]
+interface_desc = "获取Samba用户列表."
+interface_path = "/cifs/user/list"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Cifs_User_Update]
+interface_desc = "samba 用户增加和更新."
+interface_path = "/cifs/user/update"
+requests_data_time = 1
+requests_data_1 = { user="user-01", passwd="123456" }
+
+
+[Cifs_User_Delete]
+interface_desc = "删除samba用户."
+interface_path = "/cifs/user/delete"
+requests_data_time = 1
+requests_data_1 = { user="user-01" }
+
+
+[Cifs_Share_List]
+interface_desc = "samba共享列表."
+interface_path = "/cifs/share/list"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Cifs_Share_Update]
+interface_desc = "增加更新samba共享.备注：关闭卷write-behind，gluster vol set vol1 performance.write-behind off"
+interface_path = "/cifs/share/update"
+requests_data_time = 1
+requests_data_1 = { name="share1", volname="vol1", subdir="/", start=true, glfs_api=true, acls=true, allow_hosts=[], deny_hosts= [], guest_ok=true, admin_users=["user-01"], valid_users= ["user-01"], invalid_users=[], read_only=true, read_list=["user-01"], write_list=["user-01"], create_mode="493", directory_mode="493", tune=true, extra_opts={ "strict locking"="no" } }
+
+
+[Cifs_Share_Delete]
+interface_desc = "删除samba共享."
+interface_path = "/cifs/share/delete"
+requests_data_time = 1
+requests_data_1 = { name="share1" }
+
+
+[Cifs_Client_Status]
+interface_desc = "获取samba客户状态."
+interface_path = "/cifs/service/status"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Cifs_Config_Export]
+interface_desc = "导出Samba配置信息."
+interface_path = "/cifs/config/export"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Cifs_Config_Import]
+interface_desc = "导入Samba配置信息."
+interface_path = "/cifs/config/import"
+requests_data_time = 1
+requests_data_1 = {}
+

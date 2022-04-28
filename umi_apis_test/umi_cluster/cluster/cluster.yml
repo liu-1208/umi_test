@@ -1,0 +1,158 @@
+
+config:
+    name: "Cluster Cluster Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host-host_ip_01: ${P(umi_cluster/data/glusterfs.csv)}
+
+teststeps:
+-
+    name: Cluster Version Info
+    request:
+        method: POST
+        url: "/cluster/version/info"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Service Init
+    request:
+        method: POST
+        url: "/cluster/service/init"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Service Enable
+    request:
+        method: POST
+        url: "/cluster/service/enable"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Service Status
+    request:
+        method: POST
+        url: "/cluster/service/status"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Op Version Info
+    request:
+        method: POST
+        url: "/cluster/op_version/info"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+# 暂未实现
+# -
+#     name: Cluster Node Init
+#     request:
+#         method: POST
+#         url: "/cluster/node/init"
+#         json: {
+#             "req_host": "$req_host"
+#         }
+#     validate:
+#         - eq: ["status_code", 200]
+-
+    name: Cluster Node List
+    request:
+        method: POST
+        url: "/cluster/node/list"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Node Append
+    request:
+        method: POST
+        url: "/cluster/node/append"
+        json: {
+            "req_host": "$req_host",
+            "node_addr": "$host_ip_01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Node Config Sync
+    request:
+        method: POST
+        url: "/cluster/node/sync"
+        json: {
+            "req_host": "$req_host",
+            "node_addr": "$host_ip_01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Node Status
+    request:
+        method: POST
+        url: "/cluster/node/status"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Node Remove
+    request:
+        method: POST
+        url: "/cluster/node/remove"
+        json: {
+            "req_host": "$req_host",
+            "node_addr": "$host_ip_01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Service Disable
+    request:
+        method: POST
+        url: "/cluster/service/disable"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+# -
+#     name: Cluster Node Config Export
+#     request:
+#         method: POST
+#         url: "/cluster/node/config/export"
+#         json: {
+#             "req_host": "$req_host"
+#         }
+#     validate:
+#         - eq: ["status_code", 200]
+# -
+#     name: Cluster Node Config Import
+#     request:
+#         method: POST
+#         url: "/cluster/node/config/import"
+#         json: {
+#             "req_host": "$req_host",
+#             "config": "string"
+#         }
+#     validate:
+#         - eq: ["status_code", 200]
+
+
+
+
+

@@ -1,0 +1,84 @@
+module = "CIFS"
+interface_names = [
+    "Cifs_Service_Status",
+    "Cifs_Service_Init",
+    "Cifs_Service_Enable",
+    "Cifs_User_List",
+    "Cifs_User_Update",
+    "Cifs_Share_List",
+    "Cifs_Share_Update",
+    "Cifs_Client_Status"
+]
+
+[Cifs_Service_Status]
+interface_desc = "获取CIFS服务状态"
+interface_path = "/cluster/cifs/service/status"
+requests_data_time = 1
+requests_data_1 = { req_host="172.18.123.73" }
+
+
+[Cifs_Service_Init]
+interface_desc = "初始化CIFS配置"
+interface_path = "/cluster/cifs/service/init"
+requests_data_time = 1
+requests_data_1 = { req_host="172.18.123.73" }
+
+
+[Cifs_Service_Enable]
+interface_desc = "开启CIFS服务"
+interface_path = "/cluster/cifs/service/enable"
+requests_data_time = 1
+requests_data_1 = { req_host="172.18.123.73" }
+
+
+[Cifs_User_List]
+interface_desc = "获取CIFS用户信息列表"
+interface_path = "/cluster/cifs/user/list"
+requests_data_time = 3
+requests_data_1 = { req_host="172.18.123.71" }
+requests_data_2 = { req_host="172.18.123.72" }
+requests_data_3 = { req_host="172.18.123.73" }
+
+
+[Cifs_User_Update]
+interface_desc = "添加CIFS用户/修改用户密码"
+interface_path = "/cluster/cifs/user/update"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1", user="user-01", passwd="123456" }
+
+
+[Cifs_Share_List]
+interface_desc = "获取CIFS共享信息列表"
+interface_path = "/cluster/cifs/share/list"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Cifs_Share_Update]
+interface_desc = "增加/更新CIFS共享"
+interface_path = "/cluster/cifs/share/update"
+requests_data_time = 1
+[Cifs_Share_Update.requests_data_1]
+req_host="127.0.0.1"
+name="share-01"
+vol_name="vol-01"
+share_dir="/subdir-01"
+acls=true
+allow_hosts=["172.18.123.0/24"]
+deny_hosts=["192.168.2.0/24"]
+guest_ok=true
+admin_users=["user-01"]
+read_list=["user-01"]
+write_list=["user-01"]
+create_mode="0644"
+directory_mode="0755"
+
+
+[Cifs_Client_Status]
+interface_desc = "获取CIFS共享的客户端连接状态列表"
+interface_path = "/cluster/cifs/client/status"
+requests_data_time = 3
+requests_data_1 = { req_host="172.18.123.71" }
+requests_data_2 = { req_host="172.18.123.72" }
+requests_data_3 = { req_host="172.18.123.73" }
+

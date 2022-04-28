@@ -1,0 +1,17 @@
+module = "Posix"
+interface_names = [
+    "Posix_Share_Delete"
+]
+
+
+[Posix_Share_Delete]
+interface_desc = "删除Posix共享客户端访问权限"
+interface_path = "/cluster/posix/share/delete"
+requests_data_time = 1
+[Posix_Share_Delete.requests_data_1]
+req_host="172.18.123.73"
+vol_name="vol-01"
+share_dir="/vol-01/subdir-01"
+
+
+

@@ -1,0 +1,53 @@
+
+config:
+    name: "request methods testcase with functions"
+    # base_url: ${ENV(node_url)}
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        host01: ${P(umi_node/data/storage.csv)}
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+-
+    name: Gluster Volume Option Set
+    request:
+        method: POST
+        url: "/gluster/volume/option/set"
+        json: {
+          "vol_name": "pytest-vol-01",
+          "opt": "nfs.disable",
+          "value": "off"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Option Get
+    request:
+        method: POST
+        url: "/gluster/volume/option/get"
+        json: {
+          "vol_name": "pytest-vol-01",
+          "opt": "all"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Option Reset
+    request:
+        method: POST
+        url: "/gluster/volume/option/reset"
+        json: {
+          "vol_name": "pytest-vol-01",
+          "opt": "nfs.disable",
+          "force": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+    

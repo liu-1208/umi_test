@@ -1,0 +1,207 @@
+
+config:
+    name: "request methods testcase with functions"
+    base_url: ${get_node_url()}
+    parameters:
+        device01-device02: ${P(umi_node/data/network.csv)}
+
+teststeps:
+-
+    name: Get Device List
+    request:
+        method: POST
+        url: "/network/devices/get"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Get Device Config
+    request:
+        method: POST
+        url: "/network/device/config/get"
+        json: {
+          "dev_name": "$device01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Set Ethernet Connection
+    request:
+        method: POST
+        url: "/network/connection/ethernet/set"
+        json: {
+          "con_name": "$device01",
+          "ifname": "$device01",
+          "ip_addr": "172.169.100.11/16",
+          "gateway": "172.16.1.1",
+          "dns_servers": "172.16.1.1,114.114.114.114",
+          "search_domains": "localhost.localdomain",
+          "mtu": 1500
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Get Con List
+    request:
+        method: POST
+        url: "/network/connections/get"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Get Con Config
+    request:
+        method: POST
+        url: "/network/connection/get"
+        json: {
+          "con_name": "$device01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Up Connection
+    request:
+        method: POST
+        url: "/network/connection/up"
+        json: {
+          "con_name": "$device01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Set Dns Server
+    request:
+        method: POST
+        url: "/network/connection/dns/server/set"
+        json: {
+          "con_name": "$device01",
+          "dns_servers": "114.114.114.114",
+          "search_domains": "localhost.localdomain"
+        }
+    # 由于 put 并返回结果后，后台实际存在还在执行的可能，所以这里等待3秒
+    teardown_hooks:
+        - ${sleep(10)}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Down Connection
+    request:
+        method: POST
+        url: "/network/connection/down"
+        json: {
+          "con_name": "$device01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Set Team Connection
+    request:
+        method: POST
+        url: "/network/connection/team/set"
+        json: {
+          "con_name": "ens1000",
+          "team_mode": "roundrobin",
+          "members": [
+            $device01,
+            $device02
+          ],
+          "ip_addr": "10.16.1.10/24",
+          "gateway": "10.16.1.1",
+          "dns_servers": "114.114.114.114",
+          "search_domains": "localhost.localdomain",
+          "mtu": 1500
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Up Team Connection
+    request:
+        method: POST
+        url: "/network/connection/up"
+        json: {
+          "con_name": "ens1000"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Down Team Connection
+    request:
+        method: POST
+        url: "/network/connection/down"
+        json: {
+          "con_name": "ens1000"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Delete Team Connection
+    request:
+        method: POST
+        url: "/network/connection/delete"
+        json: {
+          "con_name": "ens1000"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Set Bond Connection
+    request:
+        method: POST
+        url: "/network/connection/bond/set"
+        json: {
+          "con_name": "ens1001",
+          "bond_mode": "balance-rr",
+          "members": [
+            $device01,
+            $device02
+          ],
+          "ip_addr": "10.16.1.11/24",
+          "gateway": "10.16.1.1",
+          "dns_servers": "114.114.114.114",
+          "search_domains": "localhost.localdomain",
+          "mtu": 1500
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Up Bond Connection
+    request:
+        method: POST
+        url: "/network/connection/up"
+        json: {
+          "con_name": "ens1001"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Down Bond Connection
+    request:
+        method: POST
+        url: "/network/connection/down"
+        json: {
+          "con_name": "ens1001"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Delete Bond Connection
+    request:
+        method: POST
+        url: "/network/connection/delete"
+        json: {
+          "con_name": "ens1001"
+        }
+    # 由于 put 并返回结果后，后台实际存在还在执行的可能，所以这里等待3秒
+    teardown_hooks:
+        - ${sleep(10)}
+    validate:
+        - eq: ["status_code", 200]
+
+
+
+

@@ -1,0 +1,384 @@
+module = "Gluster"
+interface_names = [
+    "Gluster_Version_Info",
+    "Gluster_Service_Status",
+    "Gluster_Service_Disable",
+    "Gluster_Service_Enable",
+    "Gluster_Pool_List",
+    "Gluster_Pool_Cfg_List",
+    "Gluster_Peer_Status",
+    "Gluster_Peer_Probe",
+    "Gluster_Peer_Detach",
+    "Gluster_Cluster_Versions",
+    "Gluster_Volume_Create_Single_Replica",
+    "Gluster_Volume_Create_Three_Replica",
+    "Gluster_Volume_Create_Arbiter",
+    "Gluster_Volume_Create_EC",
+    "Gluster_Volume_Start",
+    "Gluster_Volume_Stop",
+    "Gluster_Volume_Delete",
+    "Gluster_Volume_List",
+    "Gluster_Volume_Info",
+    "Gluster_Volume_Cfg_List",
+    "Gluster_Volume_Status",
+    "Gluster_Brick_Add",
+    "Gluster_Brick_Replace_Commit",
+    "Gluster_Brick_Remove_Start",
+    "Gluster_Brick_Remove_Stop",
+    "Gluster_Brick_Remove_Status",
+    "Gluster_Brick_Remove_Commit",
+    "Gluster_Brick_Remove_Force",
+    "Gluster_Volume_Option_Set",
+    "Gluster_Volume_Option_Reset",
+    "Gluster_Volume_Option_Get",
+    "Gluster_Volume_Group_Set",
+    "Gluster_Volume_Group_List",
+    "Gluster_Volume_Heal_Enable",
+    "Gluster_Volume_Heal_Disable",
+#    "Gluster_Volume_Heal_Full",
+#    "Gluster_Volume_Heal_Statistics",
+#    "Gluster_Volume_Heal_Split_Brain",
+    "Gluster_Volume_Heal_Info",
+    "Gluster_Volume_Rebalance_Start",
+    "Gluster_Volume_Rebalance_Stop",
+    "Gluster_Volume_Rebalance_Status",
+    "Gluster_Volume_Sync",
+    "Gluster_System_Copy",
+    "Gluster_Volume_Reset",
+#    "Gluster_Volume_Reset_Brick_Start",
+#    "Gluster_Volume_Reset_Brick_Commit"
+]
+
+
+[Gluster_Version_Info]
+interface_desc = "查看glusterfs版本信息"
+interface_path = "/gluster/version/info"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Service_Status]
+interface_desc = "查看glusterd服务状态"
+interface_path = "/gluster/service/status"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Service_Disable]
+interface_desc = "关闭glusterd服务"
+interface_path = "/gluster/service/disable"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Service_Enable]
+interface_desc = "开启glusterd服务"
+interface_path = "/gluster/service/enable"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Pool_List]
+interface_desc = "查看集群状态"
+interface_path = "/gluster/pool/list"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Pool_Cfg_List]
+interface_desc = "查看集群状态"
+interface_path = "/gluster/pool/cfg/list"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Peer_Status]
+interface_desc = "获取集群节点的状态.(不包含自己)"
+interface_path = "/gluster/peer/status"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Peer_Probe]
+interface_desc = "添加节点到集群"
+interface_path = "/gluster/peer/probe"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Peer_Detach]
+interface_desc = "从集群中移除节点"
+interface_path = "/gluster/peer/detach"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Cluster_Versions]
+interface_desc = "获取glusterd协议版本"
+interface_path = "/gluster/cluster/versions"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Volume_Create_Single_Replica]
+interface_desc = "创建单副本卷"
+interface_path = "/gluster/volume/create"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bricks=["node1.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", "node1.tc.com:/data/2854b15a-725b-4d40-ac6b-29a91287086a"], replica=1, arbiter=0, disperse_data=0, redundancy=0, transport="tcp", force=true }
+
+
+[Gluster_Volume_Create_Three_Replica]
+interface_desc = "创建双副本卷"
+interface_path = "/gluster/volume/create"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bricks=["node1.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", "node2.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", "node3.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", "node1.tc.com:/data/2854b15a-725b-4d40-ac6b-29a91287086a", "node2.tc.com:/data/2854b15a-725b-4d40-ac6b-29a91287086a", "node3.tc.com:/data/2854b15a-725b-4d40-ac6b-29a91287086a"], replica=3, arbiter=0, disperse_data=0, redundancy=0, transport="tcp", force=true }
+
+
+[Gluster_Volume_Create_Arbiter]
+interface_desc = "创建仲裁卷"
+interface_path = "/gluster/volume/create"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bricks=["node1.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", "node2.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", "node3.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f"], replica=2, arbiter=1, disperse_data=0, redundancy=0, transport="tcp", force=true }
+
+
+[Gluster_Volume_Create_EC]
+interface_desc = "创建纠删卷"
+interface_path = "/gluster/volume/create"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bricks=["node1.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", "node2.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", "node3.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", "node1.tc.com:/data/2854b15a-725b-4d40-ac6b-29a91287086a", "node2.tc.com:/data/2854b15a-725b-4d40-ac6b-29a91287086a", "node3.tc.com:/data/2854b15a-725b-4d40-ac6b-29a91287086a"], replica=0, arbiter=0, disperse_data=4, redundancy=2, transport="tcp", force=true }
+
+
+[Gluster_Volume_Start]
+interface_desc = "启动xdfs存储卷"
+interface_path = "/gluster/volume/start"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", force=true }
+
+
+[Gluster_Volume_Stop]
+interface_desc = "停止xdfs存储卷"
+interface_path = "/gluster/volume/stop"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", force=true }
+
+
+[Gluster_Volume_Delete]
+interface_desc = "删除xdfs存储卷"
+interface_path = "/gluster/volume/delete"
+requests_data_time = 1
+requests_data_1 = { volname="vol1" }
+
+
+[Gluster_Volume_List]
+interface_desc = "列出当前集群中有多少xdfs存储卷"
+interface_path = "/gluster/volume/list"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Volume_Info]
+interface_desc = "获取卷的信息, 如果volname为all, 则获取所有卷的信息"
+interface_path = "/gluster/volume/info"
+requests_data_time = 1
+requests_data_1 = { volname="all" }
+
+
+[Gluster_Volume_Cfg_List]
+interface_desc = "从配置文件 /var/lib/glusterd/vols/vol1 中获取某一卷的具体信息"
+interface_path = "/gluster/volume/cfg/list"
+requests_data_time = 1
+requests_data_1 = { volname= "vol1" }
+
+
+[Gluster_Volume_Status]
+interface_desc = "获取卷的信息, 如果volname为all, 则获取所有卷的信息"
+interface_path = "/gluster/volume/status"
+requests_data_time = 1
+requests_data_1 = { volname= "vol1" }
+
+
+[Gluster_Brick_Add]
+interface_desc = "扩容卷"
+interface_path = "/gluster/brick/add"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bricks=["node1.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node2.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node3.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa"], force=true }
+
+
+[Gluster_Brick_Replace_Commit]
+interface_desc = "替换卷中某个brick"
+interface_path = "/gluster/brick/replace/commit"
+requests_data_time = 2
+requests_data_1 = { volname="vol1", source_brick="node1.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", new_brick="node1.tc.com:/data/2d3bb92e-2f4a-4c73-be6f-993e4c652473" }
+requests_data_2 = { volname="vol1", source_brick="node1.tc.com:/data/2d3bb92e-2f4a-4c73-be6f-993e4c652473", new_brick="node1.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f" }
+
+
+[Gluster_Brick_Remove_Start]
+interface_desc = "获移除某个brick并开启"
+interface_path = "/gluster/brick/remove/start"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bricks=["node1.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node2.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node3.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa"], replica="3" }
+
+
+[Gluster_Brick_Remove_Stop]
+interface_desc = "移除某个brick并关闭"
+interface_path = "/gluster/brick/remove/stop"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bricks=["node1.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node2.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node3.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa"], replica="3" }
+
+
+[Gluster_Brick_Remove_Status]
+interface_desc = "移除某个brick并查看状态"
+interface_path = "/gluster/brick/remove/status"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bricks=["node1.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node2.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node3.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa"], replica="3" }
+
+
+[Gluster_Brick_Remove_Commit]
+interface_desc = "移除某个brick并查看状态"
+interface_path = "/gluster/brick/remove/commit"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bricks=["node1.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node2.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node3.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa"], replica="3" }
+
+
+[Gluster_Brick_Remove_Force]
+interface_desc = "移除某个brick并查看状态"
+interface_path = "/gluster/brick/remove/force"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bricks=["node1.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node2.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa", "node3.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa"], replica="3" }
+
+
+[Gluster_Volume_Option_Get]
+interface_desc = "获取卷配置参数项"
+interface_path = "/gluster/volume/option/get"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", opts="all" }
+
+
+[Gluster_Volume_Option_Set]
+interface_desc = "配置卷参数选项"
+interface_path = "/gluster/volume/option/set"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", opts="nfs.disable", value="off" }
+
+
+[Gluster_Volume_Option_Reset]
+interface_desc = "重置卷参数选项"
+interface_path = "/gluster/volume/option/reset"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", opt="nfs.disable", force=false }
+
+
+[Gluster_Volume_Group_List]
+interface_desc = "从文件夹 /var/lib/glusterd/groups 中获取卷组配置信息"
+interface_path = "/gluster/volume/group/list"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Gluster_Volume_Group_Set]
+interface_desc = "设置卷组"
+interface_path = "/gluster/volume/group/set"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", group="samba" }
+
+
+[Gluster_Volume_Heal_Disable]
+interface_desc = "禁用卷的修复功能"
+interface_path = "/gluster/volume/heal/disable"
+requests_data_time = 1
+requests_data_1 = { volname="vol1" }
+
+
+[Gluster_Volume_Heal_Enable]
+interface_desc = "启动卷的修复功能"
+interface_path = "/gluster/volume/heal/enable"
+requests_data_time = 1
+requests_data_1 = { volname="vol1" }
+
+
+[Gluster_Volume_Heal_Full]
+interface_desc = "启用卷的全扫描修复功能"
+interface_path = "/gluster/volume/heal/full"
+requests_data_time = 1
+requests_data_1 = { volname="vol1" }
+
+
+[Gluster_Volume_Heal_Statistics]
+interface_desc = "统计卷的修复信息"
+interface_path = "/gluster/volume/heal/statistics"
+requests_data_time = 1
+requests_data_1 = { volname="vol1" }
+
+
+[Gluster_Volume_Heal_Split_Brain]
+interface_desc = "统计卷中未修复的文件信息"
+interface_path = "/gluster/volume/heal/split/brain"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", bigger_file="string", latest_mtime="string", source_brick="string", path="string" }
+
+
+[Gluster_Volume_Heal_Info]
+interface_desc = "统计卷中未修复的文件信息"
+interface_path = "/gluster/volume/heal/info"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", only_split_brain=false }
+
+
+[Gluster_Volume_Rebalance_Start]
+interface_desc = "统计卷中未修复的文件信息"
+interface_path = "/gluster/volume/rebalance/start"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", force=false }
+
+
+[Gluster_Volume_Rebalance_Stop]
+interface_desc = "关闭卷的负载均衡"
+interface_path = "/gluster/volume/rebalance/stop"
+requests_data_time = 1
+requests_data_1 = { volname="vol1" }
+
+
+[Gluster_Volume_Rebalance_Status]
+interface_desc = "查看卷的负载均衡状态"
+interface_path = "/gluster/volume/rebalance/status"
+requests_data_time = 1
+requests_data_1 = { volname="vol1" }
+
+
+[Gluster_Volume_Sync]
+interface_desc = "同步卷文件"
+interface_path = "/gluster/volume/sync"
+requests_data_time = 1
+requests_data_1 = { hostname="node1.tc.com", volname="vol1" }
+
+
+[Gluster_System_Copy]
+interface_desc = "拷贝文件"
+interface_path = "/gluster/system/copy"
+requests_data_time = 1
+requests_data_1 = { file_path="/vols/vol1/info" }
+
+
+[Gluster_Volume_Reset]
+interface_desc = "重置卷"
+interface_path = "/gluster/volume/reset"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", force=false }
+
+
+[Gluster_Volume_Reset_Brick_Start]
+interface_desc = "重置brick配置项"
+interface_path = "/gluster/volume/reset/brick/start"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", source_brick="node1.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f" }
+
+
+[Gluster_Volume_Reset_Brick_Commit]
+interface_desc = "重置brick配置项"
+interface_path = "/gluster/volume/reset/brick/commit"
+requests_data_time = 1
+requests_data_1 = { volname="vol1", source_brick="node1.tc.com:/data/b94afa00-bf51-46cb-b145-fd8f0bf9913f", new_brick="node1.tc.com:/data/541ad096-acd9-497a-9fb2-ee60d0544ffa"}
+
+
+# 参考资料
+# https://staged-gluster-docs.readthedocs.io/en/release3.7.0beta1/Features/heal-info-and-split-brain-resolution/

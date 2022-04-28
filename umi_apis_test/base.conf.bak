@@ -1,0 +1,30 @@
+# UMI_Node API url
+node_url=http://172.18.123.91:8001
+
+# UMI_Cluster API url
+cluster_url=http://172.18.123.91:8000
+
+# Global username and password
+# All server nodes should have the same username and passwd
+username=root
+port=22
+passwd=123456
+
+# all server nodes's external ip
+ip_list=172.18.123.91,172.18.123.92,172.18.123.93
+
+# uuid for brick. Usually no modification is required.
+# The corresponding relationship is as follows: 
+# uuid_01 --> host01 in storage.csv
+# uuid_02 --> host02 in storage.csv
+# uuid_03 --> host03 in storage.csv
+# uuid_04 --> host04 in storage.csv
+# uuid_05 --> host05 in storage.csv
+# uuid_06 --> host06 in storage.csv
+uuid_01=12345678-1234-1234-1234-12345678901b
+uuid_02=12345678-1234-1234-1234-12345678901c
+uuid_03=12345678-1234-1234-1234-12345678902b
+uuid_04=12345678-1234-1234-1234-12345678902c
+uuid_05=12345678-1234-1234-1234-12345678903b
+uuid_06=12345678-1234-1234-1234-12345678903c
+

@@ -1,0 +1,86 @@
+
+config:
+    name: "Node Gluster Volume Cache Test"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        host01: ${P(umi_node/data/storage.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+
+-
+    name: Gluster Volume Cache Size
+    request:
+        method: POST
+        url: "/gluster/volume/cache/cache_size"
+        json: {
+            "vol_name": "$vol_name",
+            "cache_size": "32MB"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Rda Cache Limit
+    request:
+        method: POST
+        url: "/gluster/volume/cache/rda_cache_limit"
+        json: {
+            "vol_name": "$vol_name",
+            "rda_cache_limit": "100MB"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Md Cache Timeout
+    request:
+        method: POST
+        url: "/gluster/volume/cache/md_cache_timeout"
+        json: {
+            "vol_name": "$vol_name",
+            "md_cache_timeout": 600
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Performance Cache Invalidation
+    request:
+        method: POST
+        url: "/gluster/volume/cache/performance_cache_invalidation"
+        json: {
+            "vol_name": "$vol_name",
+            "is_enable": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Cache Invalidation Timeout
+    request:
+        method: POST
+        url: "/gluster/volume/cache/cache_invalidation_timeout"
+        json: {
+            "vol_name": "$vol_name",
+            "cache_invalidation_timeout": 600
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Features Cache Invalidation
+    request:
+        method: POST
+        url: "/gluster/volume/cache/feature_cache_invalidation"
+        json: {
+            "vol_name": "$vol_name",
+            "is_enable": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+
+

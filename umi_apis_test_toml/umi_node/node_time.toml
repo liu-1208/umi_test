@@ -1,0 +1,56 @@
+module = "Time"
+interface_names = [
+    "Get_Timezones",
+    "Get_Time",
+    "Set_Time",
+    "Chrony_Config_Get",
+    "Chrony_Config_Client",
+    "Chrony_Makestep"
+]
+
+
+[Get_Timezones]
+interface_desc = "获得所有时区."
+interface_path = "/network/time/timezones"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Get_Time]
+interface_desc = "获取当前时间的详细信息."
+interface_path = "/network/time/get"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Set_Time]
+interface_desc = "设置时区."
+interface_path = "/network/time/set"
+requests_data_time = 1
+requests_data_1 = { timezone="Asia/Shanghai", new_time="2021-04-13T15:00:00", rtc=true, set_ntp=false }
+
+
+[Chrony_Config_Get]
+interface_desc = "获取NTP配置文件."
+interface_path = "/network/time/ntp/get"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Chrony_Config_Client]
+interface_desc = "配置Chrony客户机."
+interface_path = "/network/time/ntp/put"
+requests_data_time = 1
+requests_data_1 = { server_list=[ "cn.pool.ntp.org", "192.168.1.1"], allow_subnet="0.0.0.0/0" }
+
+
+[Chrony_Makestep]
+interface_desc = "立即同步时间."
+interface_path = "/network/time/ntp/ntpdate"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+
+
+

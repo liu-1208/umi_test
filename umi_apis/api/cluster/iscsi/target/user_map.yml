@@ -1,0 +1,24 @@
+config:
+    name: Iscsi Target User Map
+    base_url: ${ENV(API_URL)}
+    variables:
+        ret_code: 200
+        req_host: 127.0.0.1
+        iqn: iqn.2021-10.cluster-01.target-01
+        incoming_users: --Empty--
+        outgoing_user: --Empty--
+
+teststeps:
+-
+    name: API
+    request:
+        url: /cluster/iscsi/target/user_map
+        method: POST
+        json: ${gen_data(
+                req_host=$req_host,
+                iqn=$iqn,
+                incoming_users=$incoming_users,
+                outgoing_user=$outgoing_user
+            )}
+    validate:
+        - eq: ["status_code", $ret_code]

@@ -1,0 +1,238 @@
+
+config:
+    name: "request methods testcase with functions"
+    # base_url: ${ENV(node_url)}
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        user-passwd-lun_name-lun_size-target_iqn-target_address: ${P(umi_node/data/tgt.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    variables:
+        host01: "${get_host_once(host01)}"
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+-
+    name: Tgt Service Status
+    request:
+        method: POST
+        url: "/iscsi/tgt/service/status"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Service Init
+    request:
+        method: POST
+        url: "/iscsi/tgt/service/init"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Service Enable
+    request:
+        method: POST
+        url: "/iscsi/tgt/service/enable"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Lun Info
+    request:
+        method: POST
+        url: "/iscsi/tgt/lun/info"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Lun Vfs Update
+    request:
+        method: POST
+        url: "/iscsi/tgt/lun/vfs_update"
+        json: {
+          "path": "/reexport/vol-01/.iscsi/$lun_name.raw",
+          "bstype": "rdwr",
+          "lun_size": "$lun_size",
+          "vol_name": "$vol_name",
+          "thin": true,
+          "wcache": true,
+          "ex_args": {}
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Lun Glfs Update
+    request:
+        method: POST
+        url: "/iscsi/tgt/lun/glfs_update"
+        json: {
+          "path": "/.iscsi/$lun_name.raw",
+          "vol_name": "$vol_name",
+          "host": "localhost",
+          "lun_size": "$lun_size",
+          "thin": true,
+          "wcache": true,
+          "ex_args": {}
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Lun Status
+    request:
+        method: POST
+        url: "/iscsi/tgt/lun/status"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Target Info
+    request:
+        method: POST
+        url: "/iscsi/tgt/target/info"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Target Update
+    request:
+        method: POST
+        url: "/iscsi/tgt/target/update"
+        json: {  
+          "iqn": "$target_iqn",
+          "acls": [
+              "iqn.2005-03.org.open-iscsi:3f5058b1d0a0",
+              "iqn.1994‐05.com.redhat:5674d1912c88"
+          ],
+          "user": "$user",
+          "passwd": "$passwd",
+          "mutual_user": "$user",
+          "mutual_passwd": "$passwd",
+          "ex_args": {}
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Target Status
+    request:
+        method: POST
+        url: "/iscsi/tgt/target/status"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Target Lun Map Set
+    request:
+        method: POST
+        url: "/iscsi/tgt/target/lun_map_set"
+        json: {
+          "iqn": "$target_iqn",
+          "lun_sn_lst": [
+            "/reexport/vol-01/.iscsi/$lun_name.raw",
+          ],
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Target Delete
+    request:
+        method: POST
+        url: "/iscsi/tgt/target/delete"
+        json: {
+          "iqn": "$target_iqn",
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Lun Vfs Delete
+    request:
+        method: POST
+        url: "/iscsi/tgt/lun/vfs_delete"
+        json: {
+          "path": "/reexport/vol-01/.iscsi/$lun_name.raw",
+          "clean_data": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Lun Glfs Delete
+    request:
+        method: POST
+        url: "/iscsi/tgt/lun/glfs_delete"
+        json: {
+          "path": "/.iscsi/$lun_name.raw",
+          "vol_name": "$vol_name",
+          "host": "localhost",
+          "clean_data": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Config Export
+    request:
+        method: POST
+        url: "/iscsi/tgt/config/export"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Config Import
+    request:
+        method: POST
+        url: "/iscsi/tgt/config/import"
+        json: {
+          "config": {
+              "lun": {
+                "/reexport/vol-01/.iscsi/$lun_name.raw": {
+                  "wcache": false,
+                  "thin": false,
+                  "lun_size": "2147483648",
+                  "bstype": "aio",
+                  "path": "/reexport/vol-01/.iscsi/$lun_name.raw"
+                },
+                "vol-01:/.iscsi/lun-02.raw": {
+                  "wcache": true,
+                  "thin": true,
+                  "lun_size": "3221225472",
+                  "host": "localhost",
+                  "vol_name": "vol-01",
+                  "path": "/.iscsi/lun-02.raw"
+                }
+              },
+              "target": {
+                "$target_iqn": {
+                  "iqn": "$target_iqn",
+                  "acls": [
+                    "iqn.2005-03.org.open-iscsi:3f5058b1d0a0",
+                    "iqn.1994-05.com.redhat:5674d1912c88"
+                  ],
+                  "user": "$user",
+                  "passwd": "$passwd",
+                  "mutual_user": "$user",
+                  "mutual_passwd": "$passwd"
+                }
+              },
+              "lun_map": {
+                "$target_iqn": [
+                    "/reexport/vol-01/.iscsi/$lun_name.raw"
+                ]
+              }
+           }
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tgt Service Disable
+    request:
+        method: POST
+        url: "/iscsi/tgt/service/disable"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+  
+

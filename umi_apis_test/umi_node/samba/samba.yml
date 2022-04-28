@@ -1,0 +1,208 @@
+
+config:
+    name: "Node Samba Test"
+    # base_url: ${ENV(node_url)}
+    base_url: ${get_node_url()}
+    parameters:
+        username-smbpasswd-sharename-create_mode-dir_mode-allow_hosts-deny_hosts:  ${P(umi_node/data/samba.csv)}
+
+teststeps:
+-
+    name: Create Test Group
+    request:
+        method: POST
+        url: "/user/group/update"
+        json: {
+          "group": "$username", 
+          "gid": 8889
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Create Test User
+    request:
+        method: POST
+        url: "/user/user/update"
+        json: {
+          "user": "$username", 
+          "passwd": "$smbpasswd",
+          "group":"$username",
+          "shell": "/bin/bash",
+          "uid": 8889,
+          "ex_groups": [ "$username" ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Cifs Service Init
+    request:
+        method: POST
+        url: "/cifs/service/init"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Cifs Service Status
+    request:
+        method: POST
+        url: "/cifs/service/status"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cifs Service Enable
+    request:
+        method: POST
+        url: "/cifs/service/enable"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cifs User Update
+    request:
+        method: POST
+        url: "/cifs/user/update"
+        json: {
+          "user": "$username",
+          "passwd": "$smbpasswd"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cifs User List
+    request:
+        method: POST
+        url: "/cifs/user/list"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cifs Share Update
+    request:
+        method: POST
+        url: "/cifs/share/update"
+        json: {
+            "name": "$sharename",
+            "vol_name": "cifs_vol1",
+            "subdir": "$username/$username",
+            "start": true,
+            "glfs_api": true,
+            "acls": true,
+            "allow_hosts": [ 
+              "$allow_hosts" 
+            ],
+            "deny_hosts": [ 
+              "$allow_hosts"  
+            ],
+            "guest_ok": true,
+            "admin_users": [
+              "$username"
+            ],
+            "valid_users": [
+              "$username"
+            ],
+            "invalid_users": [],
+            "read_only": true,
+            "read_list": [
+              "$username"
+            ],
+            "write_list": [
+              "$username"
+            ],
+            "create_mode": "$create_mode",
+            "directory_mode": "$dir_mode",
+            "tune": true,
+            "extra_opts": {
+              "strict locking": "no"
+            }
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cifs Share List
+    request:
+        method: POST
+        url: "/cifs/share/list"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cifs Client Status
+    request:
+        method: POST
+        url: "/cifs/client/status"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cifs Share Delete
+    request:
+        method: POST
+        url: "/cifs/share/delete"
+        json: {
+          "name": "$sharename"
+        }
+    validate:
+        - eq: ["status_code", 200]
+# api raise NotImplementedError
+# -
+#     name: Cifs Config Import
+#     request:
+#         method: POST
+#         url: "/cifs/config/import"
+#         json: {}
+#     validate:
+#         - eq: ["status_code", 200]
+# -
+#     name: Cifs Config Export
+#     request:
+#         method: POST
+#         url: "/cifs/config/export"
+#         json: {}
+#     validate:
+#         - eq: ["status_code", 200]
+-
+    name: Cifs User Delete
+    request:
+        method: POST
+        url: "/cifs/user/delete"
+        json: {
+          "user": "$username"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Sys User Delete
+    request:
+        method: POST
+        url: "/user/user/delete"
+        json: {
+          "user": "$username"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Sys Group Delete
+    request:
+        method: POST
+        url: "/user/group/delete"
+        json: {
+          "group": "$username"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cifs Service Disable
+    request:
+        method: POST
+        url: "/cifs/service/disable"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+
+
+

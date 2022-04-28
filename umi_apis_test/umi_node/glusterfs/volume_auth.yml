@@ -1,0 +1,41 @@
+
+config:
+    name: "Node Gluster Volume Auth Test"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        host01: ${P(umi_node/data/storage.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+
+-
+    name: Gluster Volume Auth Allow
+    request:
+        method: POST
+        url: "/gluster/volume/auth/allow"
+        json: {
+          "vol_name": "$vol_name",
+          "allow_ip": "*"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Auth Reject
+    request:
+        method: POST
+        url: "/gluster/volume/auth/reject"
+        json: {
+          "vol_name": "$vol_name",
+          "allow_ip": "*"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+

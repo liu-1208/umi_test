@@ -1,0 +1,154 @@
+module = "iSCSI"
+interface_names = [
+    "Iscis_Service_Status",
+    "Iscsi_Service_Init",
+    "Iscsi_Service_Enable",
+    "Iscsi_Service_Disable",
+    "Iscsi_User_List",
+    "Iscsi_User_Update",
+    "Iscsi_User_Delete",
+    "Iscis_Lun_List",
+    "Iscsi_Lun_Update",
+    "Iscsi_Lun_Delete",
+    "Iscsi_Lun_Status",
+    "Iscsi_Target_List",
+    "Iscsi_Target_Update",
+    "Iscsi_Target_Delete",
+    "Iscsi_Target_Status",
+    "Iscsi_Target_User_Map",
+    "Iscsi_Target_Lun_Map"
+]
+
+
+[Iscis_Service_Status]
+interface_desc = "获取节点iSCSI服务状态"
+interface_path = "/cluster/iscsi/service/status"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Iscsi_Service_Init]
+interface_desc = "初始化iSCSI配置"
+interface_path = "/cluster/iscsi/service/init"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Iscsi_Service_Enable]
+interface_desc = "开启节点iSCSI服务"
+interface_path = "/cluster/iscsi/service/enable"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Iscsi_Service_Disable]
+interface_desc = "关闭节点iSCSI服务"
+interface_path = "/cluster/iscsi/service/disable"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Iscsi_User_List]
+interface_desc = "获取iSCSI用户信息列表"
+interface_path = "/cluster/iscsi/user/list"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Iscsi_User_Update]
+interface_desc = "添加iSCSI用户/修改用户密码"
+interface_path = "/cluster/iscsi/user/update"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1", user="user-01", passwd="123456" }
+
+
+[Iscsi_User_Delete]
+interface_desc = "函数描述信息有误."
+interface_path = "/cluster/iscsi/user/delete"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1", user="user-01" }
+
+
+[Iscis_Lun_List]
+interface_desc = "获取iSCSI-Lun列表"
+interface_path = "/cluster/iscsi/user/list"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Iscsi_Lun_Update]
+interface_desc = "增加/更新Lun"
+interface_path = "/cluster/iscsi/lun/update"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" , lun_name="lun-01", lun_size="10 MiB", vol_name="vol1", thin=true, glfs_api=true }
+
+
+[Iscsi_Lun_Delete]
+interface_desc = "删除Lun"
+interface_path = "/cluster/iscsi/lun/delete"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1", lun_name="lun-01", clean_data=true }
+
+
+[Iscsi_Lun_Status]
+interface_desc = "获取Lun使用状态列表"
+interface_path = "/cluster/iscsi/lun/status"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Iscsi_Target_List]
+interface_desc = "获取iSCSI-Target列表"
+interface_path = "/cluster/iscsi/target/list"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Iscsi_Target_Update]
+interface_desc = "增加/更新iSCSI-Target"
+interface_path = "/cluster/iscsi/target/update"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1", iqn="iqn.2021-08.cluster-01.target-01", client_addrs=["127.0.0.1", "172.16.1.0/24"] }
+
+
+[Iscsi_Target_Delete]
+interface_desc = "删除iSCSI-Target"
+interface_path = "/cluster/iscsi/target/delete"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1", iqn="iqn.2021-08.cluster-01.target-01" }
+
+
+[Iscsi_Target_Status]
+interface_desc = "获取iSCSI-Target连接状态列表"
+interface_path = "/cluster/iscsi/target/status"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Iscsi_Target_User_Map]
+interface_desc = "设置iSCSI-Target双向CHAP或CHAP用户"
+interface_path = "/cluster/iscsi/target/user_map"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1", iqn="iqn.2021-08.cluster-01.target-01", incoming_users=["user-01", "user-02"], outgoing_user="user-03" }
+
+
+[Iscsi_Target_Lun_Map]
+interface_desc = "设置iSCSI-Target双向CHAP或CHAP用户"
+interface_path = "/cluster/iscsi/target/lun_map"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1", iqn= "iqn.2021-08.cluster-01.target-01", luns=["lun-01", "lun-02"] }
+
+
+[Iscsi_Config_Export]
+interface_desc = "导出iSCSI配置信息"
+interface_path = "/cluster/iscsi/config/export"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" }
+
+
+[Iscsi_Config_Import]
+interface_desc = "导入iSCSI配置信息"
+interface_path = "/cluster/iscsi/config/import"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1", config={} }
+

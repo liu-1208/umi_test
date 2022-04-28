@@ -1,0 +1,258 @@
+config:
+    name: ${ENV(umi_cluster_test_title)}
+    base_url: ${ENV(umi_cluster_url)}
+
+teststeps:
+
+# 获取节点iSCSI服务状态
+-
+    name: Iscsi Service Status
+    request:
+        method: POST
+        url: "/cluster/iscsi/service/status"
+        json: {
+            "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 初始化iSCSI配置
+-
+    name: Iscsi Service Init
+    request:
+        method: POST
+        url: "/cluster/iscsi/service/init"
+        json: {
+            "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 关闭节点iSCSI服务
+-
+    name: Iscsi Service Disable
+    request:
+        method: POST
+        url: "/cluster/iscsi/service/disable"
+        json: {
+            "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 开启节点iSCSI服务
+-
+    name: Iscsi Service Enable
+    request:
+        method: POST
+        url: "/cluster/iscsi/service/enable"
+        json: {
+            "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 添加iSCSI用户/修改用户密码  user-01
+-
+    name: Iscsi User Update
+    request:
+        method: POST
+        url: "/cluster/iscsi/user/update"
+        json: {
+            "req_host": "127.0.0.1",
+            "user": "usr-01",
+            "passwd": "123456"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 添加iSCSI用户/修改用户密码  user-02
+-
+    name: Iscsi User Update
+    request:
+        method: POST
+        url: "/cluster/iscsi/user/update"
+        json: {
+            "req_host": "127.0.0.1",
+            "user": "usr-01",
+            "passwd": "123456"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 添加iSCSI用户/修改用户密码  user-03
+-
+    name: Iscsi User Update
+    request:
+        method: POST
+        url: "/cluster/iscsi/user/update"
+        json: {
+            "req_host": "127.0.0.1",
+            "user": "usr-03",
+            "passwd": "123456"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 获取iSCSI用户信息列表
+-
+    name: Iscsi User List
+    request:
+        method: POST
+        url: "/cluster/iscsi/user/list"
+        json: {
+            "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 增加/更新Lun lun-01
+-
+    name: Iscsi Lun Update
+    request:
+        method: POST
+        url: "/cluster/iscsi/lun/update"
+        json: {
+            "req_host": "127.0.0.1",
+            "lun_name": "lun-01",
+            "lun_size": "10 MiB",
+            "vol_name": "umi_test",
+            "thin": true,
+            "glfs_api": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 增加/更新Lun lun-02
+-
+    name: Iscsi Lun Update
+    request:
+        method: POST
+        url: "/cluster/iscsi/lun/update"
+        json: {
+            "req_host": "127.0.0.1",
+            "lun_name": "lun-02",
+            "lun_size": "10 MiB",
+            "vol_name": "umi_test",
+            "thin": true,
+            "glfs_api": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 获取iSCSI-Lun列表
+-
+    name: Iscsi Lun List
+    request:
+        method: POST
+        url: "/cluster/iscsi/lun/list"
+        json: {
+            "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 获取Lun使用状态列表
+-
+    name: Iscsi Lun Status
+    request:
+        method: POST
+        url: "/cluster/iscsi/lun/status"
+        json: {
+            "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 增加/更新iSCSI-Target
+-
+    name: Iscsi Target Update
+    request:
+        method: POST
+        url: "/cluster/iscsi/target/update"
+        json: {
+            "req_host": "127.0.0.1",
+            "iqn": "iqn.2021-08.cluster-01.target-01",
+            "client_addrs": [
+                "127.0.0.1",
+                "172.16.1.0/24"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 获取iSCSI-Target列表
+-
+    name: Iscsi Target List
+    request:
+        method: POST
+        url: "/cluster/iscsi/target/list"
+        json: {
+            "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 获取iSCSI-Target连接状态列表
+-
+    name: Iscsi Target Status
+    request:
+        method: POST
+        url: "/cluster/iscsi/target/Status"
+        json: {
+            "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 设置iSCSI-Target双向CHAP或CHAP用户
+-
+    name: Iscsi Target User Map
+    request:
+        method: POST
+        url: "/cluster/iscsi/target/user_map"
+        json: {
+            "req_host": "127.0.0.1",
+            "iqn": "iqn.2021-08.cluster-01.target-01",
+            "incoming_users": [
+                "usr-01",
+                "usr-02"
+            ],
+            "outgoing_user": "usr-03"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 设置iSCSI-Target双向CHAP或CHAP用户
+-
+    name: Iscsi Target User Map
+    request:
+        method: POST
+        url: "/cluster/iscsi/target/user_map"
+        json: {
+            "req_host": "127.0.0.1",
+            "iqn": "iqn.2021-08.cluster-01.target-01",
+            "luns": [
+                "lun-01",
+                "lun-02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+

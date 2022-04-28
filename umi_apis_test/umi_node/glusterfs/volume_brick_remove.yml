@@ -1,0 +1,202 @@
+
+config:
+    name: "request methods testcase with functions"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        host01-host02-host03-host04-host05-host06: ${P(umi_node/data/storage.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Base
+    testcase: umi_node/glusterfs/module/volume_create_base.yml
+-
+    name: Gluster Brick Add
+    request:
+        method: POST
+        url: "/gluster/brick/add"
+        json: {
+          "vol_name": "$vol_name",
+          "bricks": [
+            "$host04:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+            "$host05:/data/${get_uuid_with_uuid_mark(uuid_05)}/$vol_name",
+            "$host06:/data/${get_uuid_with_uuid_mark(uuid_06)}/$vol_name"
+          ],
+        "force": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Brick Remove Start
+    request:
+        method: POST
+        url: "/gluster/brick/remove/start"
+        json: {
+          "vol_name": "$vol_name",
+          "bricks": [
+            "$host04:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+            "$host05:/data/${get_uuid_with_uuid_mark(uuid_05)}/$vol_name",
+            "$host06:/data/${get_uuid_with_uuid_mark(uuid_06)}/$vol_name"
+          ]
+          # "replica": "3"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Brick Remove Status
+    request:
+        method: POST
+        url: "/gluster/brick/remove/status"
+        json: {
+          "vol_name": "$vol_name",
+          "bricks": [
+            "$host04:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+            "$host05:/data/${get_uuid_with_uuid_mark(uuid_05)}/$vol_name",
+            "$host06:/data/${get_uuid_with_uuid_mark(uuid_06)}/$vol_name"
+          ]
+          # "replica": "3"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Brick Remove Stop
+    request:
+        method: POST
+        url: "/gluster/brick/remove/stop"
+        json: {
+          "vol_name": "$vol_name",
+          "bricks": [
+            "$host04:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+            "$host05:/data/${get_uuid_with_uuid_mark(uuid_05)}/$vol_name",
+            "$host06:/data/${get_uuid_with_uuid_mark(uuid_06)}/$vol_name"
+          ]
+          # "replica": "3",
+        }
+    #setup_hooks:
+    #    - ${sleep(10)}
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Brick Remove Force
+    request:
+        method: POST
+        url: "/gluster/brick/remove/force"
+        json: {
+          "vol_name": "$vol_name",
+          "bricks": [
+            "$host04:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+            "$host05:/data/${get_uuid_with_uuid_mark(uuid_05)}/$vol_name",
+            "$host06:/data/${get_uuid_with_uuid_mark(uuid_06)}/$vol_name"
+          ]
+          # "replica": "3"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+# -
+#     name: Gluster Volume Delete
+#     testcase: umi_node/glusterfs/module/volume_delete.yml
+# 
+# -
+#     name: Gluster Volume Create Base
+#     testcase: umi_node/glusterfs/module/volume_create_base.yml
+
+-
+    name: Gluster Brick Add
+    request:
+        method: POST
+        url: "/gluster/brick/add"
+        json: {
+          "vol_name": "$vol_name",
+          "bricks": [
+            "$host04:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+            "$host05:/data/${get_uuid_with_uuid_mark(uuid_05)}/$vol_name",
+            "$host06:/data/${get_uuid_with_uuid_mark(uuid_06)}/$vol_name"
+          ],
+        "force": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+# 这里有volume stop 和 start的操作，实际这里不应该出现这两步。
+# 这里写这两步是处理的remove-brick commit 可能失败的问题
+# 实际测试时应当关注这个步骤
+-
+    name: Gluster Volume Stop
+    request:
+        method: POST
+        url: "/gluster/volume/stop"
+        json: {
+          "vol_name": $vol_name,
+          "force": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Start
+    request:
+        method: POST
+        url: "/gluster/volume/start"
+        json: {
+          "vol_name": "$vol_name",
+          "force": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Brick Remove Start
+    request:
+        method: POST
+        url: "/gluster/brick/remove/start"
+        json: {
+          "vol_name": "$vol_name",
+          "bricks": [
+            "$host04:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+            "$host05:/data/${get_uuid_with_uuid_mark(uuid_05)}/$vol_name",
+            "$host06:/data/${get_uuid_with_uuid_mark(uuid_06)}/$vol_name"
+          ]
+          # "replica": "3"
+
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Brick Remove Commit
+    request:
+        method: POST
+        url: "/gluster/brick/remove/commit"
+        json: {
+          "vol_name": "$vol_name",
+          "bricks": [
+            "$host04:/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+            "$host05:/data/${get_uuid_with_uuid_mark(uuid_05)}/$vol_name",
+            "$host06:/data/${get_uuid_with_uuid_mark(uuid_06)}/$vol_name"
+          ]
+          # "replica": "3"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Brick Clean
+    request:
+        method: POST
+        url: "/gluster/brick/clean"
+        json: {
+            "brick_path": "/data/${get_uuid_with_uuid_mark(uuid_04)}/$vol_name",
+            "clean_data": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+  

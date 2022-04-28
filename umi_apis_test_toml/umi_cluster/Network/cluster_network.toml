@@ -1,0 +1,11 @@
+module = "Network"
+interface_names = ["Network_Interface_Status"]
+
+[Network_Interface_Status]
+interface_desc = "获取节点所有网口状态信息列表"
+interface_path = "/network/interface/status"
+requests_data_time = 3
+requests_data_1 = { req_host="172.18.123.71" }
+requests_data_2 = { req_host="172.18.123.72" }
+requests_data_3 = { req_host="172.18.123.73" }
+

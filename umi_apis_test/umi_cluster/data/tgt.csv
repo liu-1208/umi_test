@@ -1,0 +1,2 @@
+req_host,user,passwd,lun_name,lun_size,target_iqn,target_address
+127.0.0.1,user-01,123456,lun_01,10 MiB,iqn.2021-08.pytest-cluster-01.pytest-target-01,127.0.0.1

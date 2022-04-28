@@ -1,0 +1,76 @@
+
+config:
+    name: "Cluster User Test"
+    parameters:
+        req_host-user-uid-passwd-group-gid: ${P(umi_cluster/data/users.csv)}
+    base_url: ${get_node_url()}
+
+teststeps:
+-
+    name: Local User List
+    request:
+        method: POST
+        url: "/cluster/user/local/user/list"
+        json: {
+            "req_host": $req_host
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Local Group List
+    request:
+        method: POST
+        url: "/cluster/user/local/group/list"
+        json: {
+            "req_host": $req_host
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Local Group Update
+    request:
+        method: POST
+        url: "/cluster/user/local/group/update"
+        json: {
+            "req_host": $req_host,
+            "group": $group, 
+            "gid": $gid
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Local User Update
+    request:
+        method: POST
+        url: "/cluster/user/local/user/update"
+        json: {
+            "req_host": $req_host,
+            "user": $user, 
+            "passwd": $passwd,
+            "groups": [ $group ],
+            "uid": $uid
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Local User Delete
+    request:
+        method: POST
+        url: "/cluster/user/local/user/delete"
+        json: {
+            "req_host": $req_host,
+            "user": $user
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Local Group Delete
+    request:
+        method: POST
+        url: "/cluster/user/local/group/delete"
+        json: {
+            "req_host": $req_host,
+            "group": $group
+        }
+    validate:
+        - eq: ["status_code", 200]

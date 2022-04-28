@@ -1,0 +1,47 @@
+
+config:
+    name: "request methods testcase with functions"
+    # base_url: ${ENV(node_url)}
+    base_url: ${get_node_url()}
+    # parameters:
+    #     host01-host02: ${P(umi_node/data/storage.csv)}
+    variables:
+        host01: "${get_host_once(host01)}"
+        host02: "${get_host_once(host02)}"
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Multiple
+    setup_hooks:
+        - ${pytest_volume_clean(vol_name=$vol_name)}
+    request:
+        method: POST
+        url: "/gluster/volume/create"
+        json: {
+          "vol_name": $vol_name,
+          "bricks": [
+            # "${get_brick_with_uuid_mark(uuid_01)}",
+            # "${get_brick_with_uuid_mark(uuid_02)}"
+            "$host01:/data/${get_uuid_with_uuid_mark(uuid_01)}",
+            "$host02:/data/${get_uuid_with_uuid_mark(uuid_02)}"
+          ],
+          "replica": 2,
+          "disperse_data": 0,
+          "redundancy": 0,
+          "force": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Start
+    request:
+        method: POST
+        url: "/gluster/volume/start"
+        json: {
+          "vol_name": $vol_name,
+          "force": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+

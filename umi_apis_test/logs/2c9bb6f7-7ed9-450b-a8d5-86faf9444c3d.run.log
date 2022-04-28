@@ -1,0 +1,48 @@
+2022-04-28 09:52:54.867 | INFO     | httprunner.runner:test_start:451 - Start to run testcase: "umi cluster smok test", TestCase ID: 2c9bb6f7-7ed9-450b-a8d5-86faf9444c3d
+2022-04-28 09:52:54.870 | INFO     | httprunner.runner:__run_step:292 - run step begin: Cifs Service Status >>>>>>
+2022-04-28 09:52:57.724 | WARNING  | httprunner.client:request:188 - failed to get client address info: 'NoneType' object has no attribute 'connection'
+2022-04-28 09:52:57.725 | WARNING  | httprunner.client:request:196 - failed to get server address info: 'NoneType' object has no attribute 'connection'
+2022-04-28 09:52:57.728 | DEBUG    | httprunner.client:log_print:40 - 
+================== request details ==================
+method   : POST
+url      : http://172.18.123.73:8000/cluster/cifs/service/status
+headers  : {
+    "Content-Length": "0"
+}
+cookies  : {}
+body     : None
+
+2022-04-28 09:52:57.729 | DEBUG    | httprunner.client:log_print:40 - 
+================== response details ==================
+status_code : 0
+headers  : {}
+cookies  : {}
+encoding : None
+content_type : 
+body     : 
+
+2022-04-28 09:52:57.730 | ERROR    | httprunner.client:request:215 - HTTPConnectionPool(host='172.18.123.73', port=8000): Max retries exceeded with url: /cluster/cifs/service/status (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7ff2ffe46940>: Failed to establish a new connection: [Errno 113] No route to host',))
+2022-04-28 09:52:57.731 | ERROR    | httprunner.response:validate:266 - assert status_code equal 200(int)	==> fail
+check_item: status_code
+check_value: 0(int)
+assert_method: equal
+expect_value: 200(int)
+2022-04-28 09:52:57.732 | ERROR    | httprunner.runner:log_req_resp_details:194 - 
+******************************** DETAILED REQUEST & RESPONSE ********************************
+====== request details ======
+url: http://172.18.123.73:8000/cluster/cifs/service/status
+method: POST
+headers: {'HRUN-Request-ID': 'HRUN-2c9bb6f7-7ed9-450b-a8d5-86faf9444c3d-774872'}
+params: {}
+data: None
+cookies: {}
+timeout: 120
+allow_redirects: True
+verify: False
+json: {'req_host': '127.0.0.1'}
+
+====== response details ======
+status_code: 0
+headers: {}
+body: ''
+

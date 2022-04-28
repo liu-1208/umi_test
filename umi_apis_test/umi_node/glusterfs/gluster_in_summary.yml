@@ -1,0 +1,91 @@
+config:
+    # name: ${ENV(umi_cluster_test_title)}
+    name: "Umi Node Gluster Test"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        mode-host01-host02-host03-host04-host05-host06: ${P(umi_node/data/storage.csv)}
+
+teststeps:
+-
+    name: Glusterfs
+    testcase: umi_node/glusterfs/glusterfs.yml
+
+# 说明：这一步中的peer 是为之后的步骤做准备工作
+# -
+#     name: Gluster Peer Probe
+#     testcase: umi_node/glusterfs/module/gluster_peer_probe.yml
+-
+    name: Gluster Volume Create
+    testcase: umi_node/glusterfs/volume_create.yml
+-
+    name: Gluster Volume Conf List
+    testcase: umi_node/glusterfs/volume_cfg.yml
+-
+    name: Gluster Volume Auth
+    testcase: umi_node/glusterfs/volume_auth.yml
+-
+    name: Gluster Volume Diagnostics
+    testcase: umi_node/glusterfs/volume_diagnostics.yml
+-
+    name: Gluster Volume Profile
+    testcase: umi_node/glusterfs/volume_profile.yml
+-
+    name: Gluster Volume Top
+    testcase: umi_node/glusterfs/volume_top.yml
+-
+    name: Gluster Volume Diagnostics
+    testcase: umi_node/glusterfs/volume_diagnostics.yml
+-
+    name: Gluster Volume Statedump
+    testcase: umi_node/glusterfs/volume_statedump.yml
+-
+    name: Gluster Volume Thread
+    testcase: umi_node/glusterfs/volume_thread.yml
+-
+    name: Gluster Volume Cache
+    testcase: umi_node/glusterfs/volume_cache.yml
+-
+    name: Gluster Brick Add
+    testcase: umi_node/glusterfs/volume_brick_add.yml
+
+-
+    name: Gluster Brick Replace Commit
+    testcase: umi_node/glusterfs/volume_brick_replace.yml
+
+-
+    name: Gluster Brick Remove
+    testcase: umi_node/glusterfs/volume_brick_remove.yml
+
+-
+    name: Gluster Volume Option Set 
+    testcase: umi_node/glusterfs/volume_option.yml
+
+-
+    name: Gluster Volume Group Set
+    testcase: umi_node/glusterfs/volume_group.yml
+
+-
+    name: Gluster Volume Heal
+    testcase: umi_node/glusterfs/volume_heal.yml
+
+-
+    name: Gluster Volume Rebalance
+    testcase: umi_node/glusterfs/volume_rebalance.yml
+
+-
+    name: Gluster Volume Reset
+    testcase: umi_node/glusterfs/volume_reset.yml
+
+-
+    name: Gluster Volume Sync
+    testcase: umi_node/glusterfs/volume_sync.yml
+
+-
+    name: Gluster System Copy
+    testcase: umi_node/glusterfs/system_copy.yml
+
+# 说明：相对于准备工作的步骤，这一步是清理测试节点
+# -
+#     name: Gluster Peer Detach
+#     testcase: umi_node/glusterfs/module/gluster_peer_detach.yml

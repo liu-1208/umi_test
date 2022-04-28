@@ -1,0 +1,181 @@
+﻿接口名,接口路径,接口描述,是否成功(Y/N/~),错误描述
+Physic Disk List,/storage/physic_disk/list,通过smartctl工具获取物理磁盘列表，有可能包含非硬盘类的SCSI设备,Y,~
+Physic Disk Info,/storage/physic_disk/info,获取物理磁盘信息列表.,Y,~
+Logic Disk List,/storage/logic_disk/list,获取块设备列表.,Y,~
+Logic Disk Info,/storage/logic_disk/info,获取块设备信息.,Y,~
+Logic Disk Wipe,/storage/logic_disk/wipe,"块设备擦除，擦除分区信息、软raid、LVM等，不可逆慎重使用
+[shell]# wipefs -a /dev/sdg",Y,~
+Logic Disk Blink,/storage/logic_disk/blink,块设备磁盘灯闪烁检测，使用间隔读取数据模拟灯闪烁，可能包含多个相关物理设备,Y,~
+File System XFS Format,/file_system/xfs_mkfs,"格式化为 XFS Filesystem.
+块设备路径：/dev/block/",Y,~
+File System XFS Update,/file_system/xfs_update,更新 XFS Label/UUID.,Y,~
+File System Mount Info,/file_system/info,挂载信息.,Y,~
+File System Mount,/file_system/mount,挂载文件系统.,Y,~
+File System ReMount,/file_system/remount,重新挂载文件系统.,Y,~
+File System Bind,/file_system/bind,绑定文件系统.,Y,~
+File System ReBind,/file_system/rebind,重新绑定文件系统.,Y,~
+File System UnMount,/file_system/umount,卸载文件系统.,Y,~
+File System Fstab List,/file_system/fstab/list,"获取Fstab信息列表.
+配置文件：/etc/fstab",Y,~
+File System Fstab Update,/file_system/fstab/update,增加或更新Fstab Mntent.,Y,~
+File System Fstab Delete,/file_system/fstab/delete,删除Fstab Mntent.,Y,~
+get_device_list,/network/devices/get,"查看设备列表.
+[shell]#  nmcli --terse --colors no --fields DEVICE device",Y,~
+get_device_config,/network/device/config/get,"获取设备配置信息.
+[shell]#  nmcli --terse --colors no device show {dev_name}ens224",Y,~
+get_con_list,/network/connections/get,"获取连接列表.
+[shell]#  nmcli --terse --colors no --fields Name connection show",Y,~
+get_con_config,/network/connection/get,"获取一个连接列表，并返回一个字典，其中包含网络管理器看到的每个连接的配置.
+[shell]#  nmcli --terse --colors no connection show {con_name}ens224",Y,~
+set_ethernet_connection,/network/connection/ethernet/set,设置以太网连接.,Y,~
+set_team_connection,/network/connection/team/set,"设置组连接.
+Team模式：roundrobin / activebackup / broadcast / lacp / loadbalance",Y,~
+set_bond_connection,/network/connection/bond/set,"设置Bond连接.
+Bond模式： balance-rr / active-backup /balance-xor / broadcast / 802.3ad / balance-tlb / balance-alb",Y,~
+up_connection,/network/connection/up,打开连接.,Y,~
+down_connection,/network/connection/down,断开连接.,Y,~
+delete_connection,/network/connection/delete,删除连接.,Y,~
+set_dns_server,/network/connection/dns/server/set,设置DNS服务.,Y,~
+Hostname Get,/network/dns/hostname/get,获取本机hostname.,Y,~
+Hostname Set,/network/dns/hostname/set,设置本机hostname,Y,~
+Host Entry List,/network/dns/hosts/list,获取本地域名解析配置项(/etc/hosts).,Y,~
+Host Entry Set,/network/dns/hosts/set,向主机名静态表中设置所有条目(/etc/hosts).,Y,~
+Host Entry Update,/network/dns/hosts/update,向主机名静态表中添加条目(/etc/hosts).,Y,~
+Host Entry Delete,/network/dns/hosts/delete,删除本地域名解析条目(/etc/hosts).,Y,~
+get_nsswitch,/network/dns/nsswitch/get,获取名字服务切换配置(/etc/nsswitch.conf).,Y,~
+update_nsswitch,/network/dns/nsswitch/update,更新名字服务切换配置(/etc/nsswitch.conf).,Y,~
+get_timezones,/network/time/timezones,获得所有时区.,Y,~
+get_time,/network/time/get,获取当前时间的详细信息.,Y,~
+set_time,/network/time/set,设置时区.,Y,~
+chrony_config_get,/network/time/ntp/get,获取NTP配置文件.,Y,~
+conf_chrony_client,/network/time/ntp/put,配置Chrony客户机.,Y,~
+chronyc_makestep,/network/time/ntp/ntpdate,立即同步时间.,Y,~
+Local Group List,/user/group/list,获取所有组信息,Y,~
+Local Group Update,/user/group/update,"设置组.
+[shell]# groupadd -o -g 1005 group-01
+[shell]# groupmod -o -g 1005 group-01",Y,~
+Local Group Delete,/user/group/delete,"删除组.
+[shell]# groupdel group-01",Y,~
+Local User List,/user/user/list,获取所有用户信息.,Y,~
+Local User Update,/user/user/update,"设置用户.
+[shell]# useradd -s /bin/bash -u 1001 -g 1005 -G group-01 -M user-01
+[shell]# usermod -s /bin/bash -u 1001 -g 1005 -G group-01 user-01",Y,~
+Local User Delete,/user/user/delete,"删除用户.
+[shell]# userdel -f user-01",Y,~
+Gluster Version Info,/gluster/version/info,查看glusterfs版本信息,Y,~
+Gluster Service Status,/gluster/service/status,查看glusterd服务状态,Y,~
+Gluster Service Enable,/gluster/service/enable,开启glusterd服务,Y,~
+Gluster Service Disable,/gluster/service/disable,开启glusterd服务,Y,~
+Gluster Pool List,/gluster/pool/list,"查看集群状态.
+[shell]# gluster pool list",Y,~
+Gluster Pool Cfg List,/gluster/pool/cfg/list,查看集群的伙伴信息.,Y,~
+Gluster Peer Status,/gluster/peer/status,获取集群节点的状态.(不包含自己),Y,~
+Gluster Peer Probe,/gluster/peer/probe,"添加节点到集群.
+[shell]# gluster peer probe Host
+[shell]# gluster peer probe 172.169.100.73 / node3",Y,~
+Gluster Peer Detach,/gluster/peer/detach,"从集群中移除节点.
+[shell]# gluster peer detach Host
+[shell]# gluster peer probe 172.169.100.73 / node3",Y,~
+Gluster Cluster Versions,/gluster/cluster/versions,"获取glusterd协议版本.
+[shell]# gluster volume get all all --xml
+[shell]# gluster volume get all cluster.op-version
+[shell]# gluster volume get all cluster.max-op-version",Y,~
+Gluster Volume Create,/gluster/volume/create,"创建新的存储卷(目前只支持单副本卷,多副本卷以及ec卷).",Y,~
+Gluster Volume Delete,/gluster/volume/delete,删除xdfs存储卷.,Y,~
+Gluster Volume Start,/gluster/volume/start,启动xdfs存储卷.,Y,~
+Gluster Volume Stop,/gluster/volume/stop,停止xdfs存储卷.,Y,~
+Gluster Volume List,/gluster/volume/list,"列出当前集群中有多少xdfs存储卷.
+[shell]# gluster volume list",Y,~
+Gluster Volume Info,/gluster/volume/info,"获取卷的信息, 如果volname为all, 则获取所有卷的信息.
+[shell]# gluster volume info --xml",Y,~
+Gluster Volume Cfg List,/gluster/volume/cfg/list,从配置文件 /var/lib/glusterd/vols/vol1 中获取某一卷的具体信息.,Y,~
+Gluster Volume Status,/gluster/volume/status,"获取卷的信息, 如果volname为all, 则获取所有卷的信息.
+[shell]# gluster volume status all detail",Y,~
+Gluster Brick Add,/gluster/brick/add,扩容卷.,Y,~
+Gluster Brick Replace Commit,/gluster/brick/replace/commit,"替换卷中某个brick.
+注意: 此接口只对冗余卷生效, 只替换brick,不做数据修复; 替换成功后glustershd进程会执行数据修复.",Y,~
+Gluster Brick Remove Start,/gluster/brick/remove/start,移除某个brick并开启.,Y,~
+Gluster Brick Remove Stop,/gluster/brick/remove/stop,移除某个brick并关闭.,Y,~
+Gluster Brick Remove Status,/gluster/brick/remove/status,移除某个brick并查看状态.,Y,~
+Gluster Brick Remove Commit,/gluster/brick/remove/commit,移除某个brick并查看状态.,Y,~
+Gluster Brick Remove Force,/gluster/brick/remove/force,移除某个brick并查看状态.,Y,~
+Gluster Volume Option Set,/gluster/volume/option/set,配置卷参数选项.,Y,~
+Gluster Volume Option Reset,/gluster/volume/option/reset,重置卷参数选项.,Y,~
+Gluster Volume Option get,/gluster/volume/option/get,获取卷配置参数项.,Y,~
+Gluster Volume Group Set,/gluster/volume/group/set,设置卷组.,Y,~
+Gluster Volume Group List,/gluster/volume/group/list,从文件夹 /var/lib/glusterd/groups 中获取卷组配置信息.,Y,~
+Gluster Volume Heal Enable,/gluster/volume/heal/enable,启动卷的修复功能.,Y,~
+Gluster Volume Heal Disable,/gluster/volume/heal/disable,禁用卷的修复功能.,Y,~
+Gluster Volume Heal Full,/gluster/volume/heal/full,启用卷的全扫描修复功能.,Y,~
+Gluster Volume Heal Statistics,/gluster/volume/heal/statistics,统计卷的修复信息.,Y,~
+Gluster Volume Heal Split Brain,/gluster/volume/heal/split/brain,统计卷中未修复的文件信息.,Y,~
+Gluster Volume Heal Info,/gluster/volume/heal/info,统计卷中未修复的文件信息.,Y,~
+Gluster Volume Rebalance Start,/gluster/volume/rebalance/start,启动卷的负载均衡.,Y,~
+Gluster Volume Rebalance Stop,/gluster/volume/rebalance/stop,关闭卷的负载均衡.,Y,~
+Gluster Volume Rebalance Status,/gluster/volume/rebalance/status,查看卷的负载均衡状态.,Y,~
+Gluster Volume Sync,/gluster/volume/sync,同步卷文件.,Y,~
+Gluster System Copy,/gluster/system/copy,拷贝文件.,Y,~
+Gluster Volume Reset,/gluster/volume/reset,重置卷.,Y,~
+Gluster Volume Reset Brick Start,/gluster/volume/reset/brick/start,重置brick配置项.,Y,~
+Gluster Volume Reset Brick Commit,/gluster/volume/reset/brick/commit,重置brick配置项.,Y,~
+Gluster NFS Service Status,/nfs/gluster/service/status,"获取集群所有节点Gluster-NFS服务状态
+gluster volume status vol-01 nfs",Y,~
+Gluster NFS Service Init,/nfs/gluster/service/init,"初始化Gluster-NFS配置
+清空配置文件/var/lib/glusterd/nfs/exports
+清空配置文件/var/lib/glusterd/nfs/netgroups
+同步到所有集群节点",Y,~
+Gluster NFS Service Enable,/nfs/gluster/service/enable,"开启集群所有节点Gluster-NFS服务
+gluster volume set vol-01 nfs.disable off",Y,~
+Gluster NFS Service Disable,/nfs/gluster/service/disable,"关闭集群所有节点Gluster-NFS服务
+gluster volume set vol-01 nfs.disable on",Y,~
+Gluster NFS Share List,/nfs/gluster/share/list,获取Gluster-NFS共享列表,Y,~
+Gluster NFS Share Update,/nfs/gluster/share/update,"创建/更新Gluster-NFS共享
+同步到所有集群节点",Y,~
+Gluster NFS Share Delete,/nfs/gluster/share/delete,删除Gluster-NFS共享 同步到所有集群节点,Y,~
+Kernel NFS Service Status,/nfs/kernel/service/status,"获取本节点Kernel-NFS服务状态
+systemctl status nfs-server",Y,~
+Kernel NFS Service Init,/nfs/kernel/service/init,"初始化Kernel-NFS配置
+清空配置文件/etc/exports",Y,~
+Kernel NFS Service Enable,/nfs/kernel/service/enable,"开启本节点Kernel-NFS服务
+systemctl enable nfs-server --now",Y,~
+Kernel NFS Service Disable,/nfs/kernel/service/disable,"关闭本节点Kernel-NFS服务
+systemctl disable nfs-server --now",Y,~
+Kernel NFS Share List,/nfs/kernel/share/list,获取Kernel-NFS共享列表,Y,~
+Kernel NFS Share Update,/nfs/kernel/share/update,创建/更新Kernel-NFS共享,Y,~
+Kernel NFS Share Delete,/nfs/kernel/share/delete,删除Kernel-NFS共享,Y,~
+NFS Client Status,/nfs/client/status,"获取NFS客户端连接状态
+[shell]# showmount --no-headers --all",Y,~
+CIFS Service Status,/cifs/service/status,检查Samba服务状态,Y,~
+CIFS Service Init,/cifs/service/init,Samba服务初始化,Y,~
+CIFS Service Enable,/cifs/service/enable,开启Samba服务,Y,~
+CIFS Service Disable,/cifs/service/disable,停止Samba服务,Y,~
+CIFS User List,/cifs/user/list,获取Samba用户列表,Y,~
+CIFS User Update,/cifs/user/update,samba 用户增加和更新.,Y,~
+CIFS User Delete,/cifs/user/delete,删除samba用户,Y,~
+CIFS Share List,/cifs/share/list,samba共享列表.,Y,~
+CIFS Share Update,/cifs/share/update,增加更新samba共享.,Y,~
+CIFS Share Delete,/cifs/share/delete,删除samba共享.,Y,~
+CIFS Client Status,/cifs/client/status,获取samba客户状态.,Y,~
+CIFS Config Export,/cifs/config/export,导出Samba配置信息,Y,~
+CIFS Config Import,/cifs/config/import,导入Samba配置信息,Y,~
+Tgt Service Status,/iscsi/tgt/service/status,获取节点TGTD服务状态,Y,~
+Tgt Service Init,/iscsi/tgt/service/init,初始化TGTD配置,Y,~
+Tgt Service Enable,/iscsi/tgt/service/enable,开启节点TGTD服务,Y,~
+Tgt Service Disable,/iscsi/tgt/service/disable,"关闭节点TGTD服务
+gluster volume set vol-01 nfs.disable on",Y,~
+Tgt User List,/iscsi/tgt/user/list,获取iSCSI用户信息列表,Y,~
+Tgt User Update,/iscsi/tgt/user/update,添加iSCSI用户/修改用户密码,Y,~
+Tgt User Delete,/iscsi/tgt/user/delete,删除iSCSI用户,Y,~
+Tgt User Status,/iscsi/tgt/user/status,获取iSCSI用户状态列表,Y,~
+Tgt Lun List,/iscsi/tgt/lun/list,获取iSCSI-Lun列表,Y,~
+Tgt Lun Update,/iscsi/tgt/lun/update,增加/更新CIFS共享,Y,~
+Tgt Lun Delete,/iscsi/tgt/lun/delete,删除CIFS共享,Y,~
+Tgt Lun Status,/iscsi/tgt/lun/status,获取Lun使用状态列表,Y,~
+Tgt Target List,/iscsi/tgt/target/list,获取iSCSI-Target列表,Y,~
+Tgt Target Update,/iscsi/tgt/target/update,增加/更新iSCSI-Target,Y,~
+Tgt Target Delete,/iscsi/tgt/target/delete,增加/更新iSCSI-Target,Y,~
+Tgt Target Status,/iscsi/tgt/target/status,获取iSCSI-Target连接状态列表,Y,~
+Tgt Target User Map,/iscsi/tgt/target/user_map,设置iSCSI-Target双向CHAP或CHAP用户,Y,~
+Tgt Target Lun Map,/iscsi/tgt/target/lun_map,设置iSCSI-Target双向CHAP或CHAP用户,Y,~
+Tgt Config Export,/iscsi/tgt/config/export,导出iSCSI配置信息,Y,~
+Tgt Config Import,/iscsi/tgt/config/import,导入iSCSI配置信息,Y,~

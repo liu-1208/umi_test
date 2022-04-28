@@ -1,0 +1,254 @@
+
+config:
+    name: "Node Gluster Tier Test"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        host01: ${P(umi_node/data/storage.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Multiple
+    testcase: umi_node/glusterfs/module/volume_create_multiple.yml
+
+-
+    name: Gluster Tier Attach
+    request:
+        method: POST
+        url: "/gluster/tier/attach"
+        json: {
+            "vol_name": "$vol_name",
+            "replica": 2,
+            "bricks": [
+              "$host04:/data/${get_uuid_with_uuid_mark(uuid_04)}",
+              "$host05:/data/${get_uuid_with_uuid_mark(uuid_05)}"
+            ],
+            "is_force": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Start
+    request:
+        method: POST
+        url: "/gluster/tier/start"
+        json: {
+            "vol_name": "$vol_name",
+            "is_force": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Status
+    request:
+        method: POST
+        url: "/gluster/tier/status"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Tier Detach Start
+    request:
+        method: POST
+        url: "/gluster/tier/detach/start"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Tier Detach Commit
+    request:
+        method: POST
+        url: "/gluster/tier/detach/commit"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Tier Detach Status
+    request:
+        method: POST
+        url: "/gluster/tier/detach/status"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Tier Detach Stop
+    request:
+        method: POST
+        url: "/gluster/tier/detach/stop"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Tier Detach Force
+    request:
+        method: POST
+        url: "/gluster/tier/detach/force"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Pause
+    request:
+        method: POST
+        url: "/gluster/tier/pause"
+        json: {
+              "vol_name": "$vol_name",
+              "is_enable": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Promote Frequency
+    request:
+        method: POST
+        url: "/gluster/tier/promote_frequency"
+        json: {
+            "vol_name": "$vol_name",
+            "promote_frequency": 120
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Demote Frequency
+    request:
+        method: POST
+        url: "/gluster/tier/demote_frequency"
+        json: {
+            "vol_name": "$vol_name",
+            "demote_frequency": 3600
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Watermark Hi
+    request:
+        method: POST
+        url: "/gluster/tier/watermark_hi"
+        json: {
+            "vol_name": "$vol_name",
+            "watermark_hi": 90
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Watermark Low
+    request:
+        method: POST
+        url: "/gluster/tier/watermark_low"
+        json: {
+            "vol_name": "$vol_name",
+            "watermark_hi": 75
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Mode
+    request:
+        method: POST
+        url: "/gluster/tier/mode"
+        json: {
+            "vol_name": "$vol_name",
+            "tier_mode": "cache"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Max Promote File Size
+    request:
+        method: POST
+        url: "/gluster/tier/max_promote_file_size"
+        json: {
+            "vol_name": "$vol_name",
+            "max_promote_file_size": 0
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Max Mb
+    request:
+        method: POST
+        url: "/gluster/tier/max_mb"
+        json: {
+            "vol_name": "$vol_name",
+            "max_mb": 4000
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Max Files
+    request:
+        method: POST
+        url: "/gluster/tier/max_files"
+        json: {
+            "vol_name": "$vol_name",
+            "max_files": 10000
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Compact
+    request:
+        method: POST
+        url: "/gluster/tier/compact"
+        json: {
+            "vol_name": "$vol_name",
+            "is_enable": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Hot Compact Frequency
+    request:
+        method: POST
+        url: "/gluster/tier/hot_compact_frequency"
+        json: {
+            "vol_name": "$vol_name",
+            "hot_compact_frequency": 604800
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Tier Cold Compact Frequency
+    request:
+        method: POST
+        url: "/gluster/tier/cold_compact_frequency"
+        json: {
+            "vol_name": "$vol_name",
+            "cold_compact_frequency": 604800
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Tier Stop
+    request:
+        method: POST
+        url: "/gluster/tier/stop"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+

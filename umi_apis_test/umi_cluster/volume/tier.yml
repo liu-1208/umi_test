@@ -1,0 +1,263 @@
+
+config:
+    name: "Cluster Volume Tier Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host-host01-host02-host03: ${P(umi_cluster/data/storage.csv)}
+    variables:
+        vol_name: vol-01
+
+teststeps:
+-
+    name: Cluster Volume Tier Attach
+    request:
+        method: POST
+        url: "/cluster/volume/tier/attach"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "replica": 2,
+            "bricks": [
+                "$host01:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host02:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name",
+                "$host03:/data/${get_uuid_with_uuid_mark(uuid_01)}/$vol_name"
+            ],
+           "is_force": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Status
+    request:
+        method: POST
+        url: "/cluster/volume/tier/status"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Start
+    request:
+        method: POST
+        url: "/cluster/volume/tier/start"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "is_force": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Promote Frequency
+    request:
+        method: POST
+        url: "/cluster/volume/tier/promote_frequency"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "promote_frequency": 120
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Demote Frequency
+    request:
+        method: POST
+        url: "/cluster/volume/tier/demote_frequency"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "demote_frequency": 3600
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Watermark Hi
+    request:
+        method: POST
+        url: "/cluster/volume/tier/watermark_hi"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "watermark_hi": 90
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Watermark Low
+    request:
+        method: POST
+        url: "/cluster/volume/tier/watermark_low"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "watermark_low": 75
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Mode
+    request:
+        method: POST
+        url: "/cluster/volume/tier/mode"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "tier_mode": "cache"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Max Promote File Size
+    request:
+        method: POST
+        url: "/cluster/volume/tier/max_promote_file_size"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "max_promote_file_size": 0
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Max Mb
+    request:
+        method: POST
+        url: "/cluster/volume/tier/max_mb"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "max_mb": 4000
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Max Files
+    request:
+        method: POST
+        url: "/cluster/volume/tier/max_files"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "max_files": 10000
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Compact
+    request:
+        method: POST
+        url: "/cluster/volume/tier/compact"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "is_enable": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Hot Compact Frequency
+    request:
+        method: POST
+        url: "/cluster/volume/tier/hot_compact_frequency"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "hot_compact_frequency": 604800
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Cold Compact Frequency
+    request:
+        method: POST
+        url: "/cluster/volume/tier/cold_compact_frequency"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "cold_compact_frequency": 604800
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Cluster Volume Tier Detach Start
+    request:
+        method: POST
+        url: "/cluster/volume/tier/detach/start"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Detach Commit
+    request:
+        method: POST
+        url: "/cluster/volume/tier/detach/commit"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Detach Stop
+    request:
+        method: POST
+        url: "/cluster/volume/tier/detach/stop"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Detach Status
+    request:
+        method: POST
+        url: "/cluster/volume/tier/detach/status"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Detach Force
+    request:
+        method: POST
+        url: "/cluster/volume/tier/detach/force"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Pause
+    request:
+        method: POST
+        url: "/cluster/volume/tier/pause"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "is_enable": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Tier Stop
+    request:
+        method: POST
+        url: "/cluster/volume/tier/stop"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+

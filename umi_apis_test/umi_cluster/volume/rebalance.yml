@@ -1,0 +1,57 @@
+
+config:
+    name: "Cluster Volume Rebalance Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host: ${P(umi_cluster/data/storage.csv)}
+    variables:
+        vol_name: vol-01
+
+teststeps:
+-
+    name: Cluster Volume Rebalance Start
+    request:
+        method: POST
+        url: "/cluster/volume/rebalance/start"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "is_force": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Rebalance Status
+    request:
+        method: POST
+        url: "/cluster/volume/rebalance/status"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Rebalance Throttle
+    request:
+        method: POST
+        url: "/cluster/volume/rebalance_throttle"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "throttle_type": "normal"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Cluster Volume Rebalance Stop
+    request:
+        method: POST
+        url: "/cluster/volume/rebalance/stop"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+        }
+    validate:
+        - eq: ["status_code", 200]

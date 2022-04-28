@@ -1,0 +1,53 @@
+
+config:
+    name: "Node Gluster Volume Shard Test"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        host01: ${P(umi_node/data/storage.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+
+-
+    name: Gluster Volume Shard
+    request:
+        method: POST
+        url: "/gluster/volume/shard"
+        json: {
+          "vol_name": "$vol_name",
+          "is_enable": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Shard Block Size
+    request:
+        method: POST
+        url: "/gluster/volume/shard/block_size"
+        json: {
+          "vol_name": "$vol_name",
+          "block_size": "64MB"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Shard Deletion Tate
+    request:
+        method: POST
+        url: "/gluster/volume/shard/deletion_rate"
+        json: {
+          "vol_name": "$vol_name",
+          "deletion_rate": 100
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+
+

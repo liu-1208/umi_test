@@ -1,0 +1,318 @@
+
+config:
+    name: "Cluster Minio Gateway Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_cluster/data/glusterfs.csv)}
+        req_host-admin_user-admin_password-api_port-console_port-username-password-group-bucket-policy: ${P(umi_cluster/data/cluster/minio_gateway.csv)}
+    variables:
+        config: pytest-config01
+
+teststeps:
+-
+    name: Minio Gateway Service Init
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/service/init"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Config Update
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/config/update"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "minio_admin_user": "$admin_user",
+            "minio_admin_password": "$admin_password",
+            "api_port": "$api_port",
+            "console_port": "$console_port",
+            "workdir": "/run/xdfs-gateway/$config"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Config List
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/config/list"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Service Enable
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/service/enable"
+        json: {
+            "req_host": "$req_host",
+            "config_list": [ 
+                "$config"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Minio Gateway Service Status
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/service/status"
+        json: { 
+            "req_host": "$req_host",
+            "config_list": [ 
+                "$config"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Bucket Update
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/bucket/update"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "bucket": "$bucket",
+            "policy": "none"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Bucket List
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/bucket/list"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Policy List
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/policy/list"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Policy Update
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/policy/update"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "policy": "$policy",
+            "raw": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:*"
+                  ],
+                  "Resource": [
+                    "arn:aws:s3:::$bucket/*"
+                  ]
+                }
+              ]
+            }
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Minio Gateway Policy Info
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/policy/info"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "policy_list": [
+                "$policy"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway User List
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/user/list"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway User Update
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/user/update"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "username": "$username",
+            "password": "$password",
+            "policy_list": [
+              "$policy"
+            ],
+            "enable": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway User Info
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/user/info"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "username_list": [
+                "$username"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Gruop List
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/group/list"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Gruop Update
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/group/update"
+        json: {
+              "req_host": "$req_host",
+              "config": "$config",
+              "group": "$group",
+              "username_list": [
+                "$username"
+              ],
+              "policy_list": [
+                "$policy"
+              ],
+              "enable": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Gruop Info
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/group/info"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "group_list": [
+                "$group"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway User Delete
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/user/delete"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "username_list": [
+                "$username"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Group Delete
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/group/delete"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "group_list": [
+                "$group"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Minio Gateway Policy Delete
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/policy/delete"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "policy_list": [
+                "$policy"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Bucket Delete
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/bucket/delete"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "bucket": "$bucket",
+            "force": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Service disable
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/service/disable"
+        json: {
+            "req_host": "$req_host",
+            "config_list": [
+                "$config"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Minio Gateway Config Delete
+    request:
+        method: POST
+        url: "/cluster/minio/gateway/config/delete"
+        json: {
+            "req_host": "$req_host",
+            "config": "$config",
+            "force": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+

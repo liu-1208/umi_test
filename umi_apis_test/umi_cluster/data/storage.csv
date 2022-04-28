@@ -1,0 +1,2 @@
+req_host,mode,host01,block01,block02,host02,host03,host04,host05,host06
+127.0.0.1,disperse-data,node-01.xdfs.com,/dev/sdb,/dev/sdc,node-02.xdfs.com,node-01.xdfs.com,node-01.xdfs.com,node-01.xdfs.com,node-01.xdfs.com

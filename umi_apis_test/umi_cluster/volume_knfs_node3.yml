@@ -1,0 +1,109 @@
+config:
+    name: ${ENV(umi_cluster_test_title)}
+    base_url: ${ENV(umi_cluster_url)}
+
+teststeps:
+
+# 获取kernel nfs的服务状态
+-
+    name: NFS Service Status
+    request:
+        method: POST
+        url: "/cluster/nfs/service/status"
+        json: {
+          "req_host": "127.0.0.1",
+          "nfs_mode": "Kernel"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 初始化NFS配置
+-
+    name: NFS Service Init
+    request:
+        method: POST
+        url: "/cluster/nfs/service/init"
+        json: {
+          "req_host": "127.0.0.1",
+          "nfs_mode": "Kernel"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 关闭NFS服务
+-
+    name: NFS Service Disable
+    request:
+        method: POST
+        url: "/cluster/nfs/service/disable"
+        json: {
+          "req_host": "127.0.0.1",
+          "nfs_mode": "Kernel"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 开启NFS服务
+-
+    name: NFS Service Enable
+    request:
+        method: POST
+        url: "/cluster/nfs/service/enable"
+        json: {
+          "req_host": "127.0.0.1",
+          "nfs_mode": "Kernel"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 增加/更新NFS共享客户端访问权限
+-
+    name: NFS Share Update
+    request:
+        method: POST
+        url: "/cluster/nfs/share/update"
+        json: {
+            "req_host": "127.0.0.1",
+            "nfs_mode": "Kernel",
+            "vol_name": "umi_test",
+            "share_dir": "/subdir-01",
+            "client": "172.18.123.0/24",
+            "readonly": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 获取NFS共享信息列表
+-
+    name: NFS Share List
+    request:
+        method: POST
+        url: "/cluster/nfs/share/list"
+        json: {
+            "req_host": "127.0.0.1",
+            "nfs_mode": "Kernel"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 删除共享
+-
+    name: Nfs Share Delete
+    request:
+        method: POST
+        url: "/cluster/nfs/share/delete"
+        json: {
+          "req_host": "127.0.0.1",
+          "nfs_mode": "Kernel",
+          "vol_name": "umi_test",
+          "share_dir": "/subdir-01",
+          "client": "172.18.123.0/24"
+        }
+    validate:
+        - eq: ["status_code", 200]

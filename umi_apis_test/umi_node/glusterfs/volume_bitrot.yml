@@ -1,0 +1,130 @@
+
+config:
+    name: "Node Gluster Volume Bitrot Test"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        host01: ${P(umi_node/data/storage.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+
+-
+    name: Gluster Volume Bitrot Enable
+    request:
+        method: POST
+        url: "/gluster/volume/bitrot/enable"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Bitrot Scrud Pause
+    request:
+        method: POST
+        url: "/gluster/volume/bitrot/scrud/pause"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Bitrot Scrud Resume
+    request:
+        method: POST
+        url: "/gluster/volume/bitrot/scrud/resume"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Bitrot Scrud Status
+    request:
+        method: POST
+        url: "/gluster/volume/bitrot/scrud/status"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Bitrot Scrud Ondemand
+    request:
+        method: POST
+        url: "/gluster/volume/bitrot/scrud/ondemand"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Bitrot Scrud Frequency
+    request:
+        method: POST
+        url: "/gluster/volume/bitrot/scrud_frequency"
+        json: {
+            "vol_name": "$vol_name",
+            "frequency_type": "hourly"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Bitrot Scrud Throttle
+    request:
+        method: POST
+        url: "/gluster/volume/bitrot/scrud_throttle"
+        json: {
+            "vol_name": "$vol_name",
+            "throttle_type": "lazy"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Bitrot Singer Threads
+    request:
+        method: POST
+        url: "/gluster/volume/bitrot/singer_threads"
+        json: {
+            "vol_name": "$vol_name",
+            "threads_count": 16
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Bitrot Singer Time
+    request:
+        method: POST
+        url: "/gluster/volume/bitrot/singer_time"
+        json: {
+            "vol_name": "$vol_name",
+            "time_in_secs": 16
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Bitrot Disable
+    request:
+        method: POST
+        url: "/gluster/volume/bitrot/disable"
+        json: {
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+

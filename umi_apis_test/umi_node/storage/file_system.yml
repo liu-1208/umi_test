@@ -1,0 +1,205 @@
+
+config:
+    name: "request methods testcase with functions"
+    # base_url: ${ENV(node_url)}
+    base_url: ${get_node_url()}
+    parameters:
+        block01: ${P(umi_node/data/storage.csv)}
+
+teststeps:
+-
+    name: File System Xfs Format
+    request:
+        method: POST
+        url: "/file_system/xfs_mkfs"
+        json: {
+          # "dev_path": "${get_block_with_uuid_mark(uuid_01)}",
+          "dev_path": "$block01",
+          "fs_label": "DataDisk",
+          "fs_uuid": "${get_uuid_with_uuid_mark(uuid_01)}",
+          "force": true,
+          "i_size": "2k",
+          "n_size": "64k",
+          "d_su": "128k",
+          "d_sw": "4"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: File System Xfs Update
+    request:
+        method: POST
+        url: "/file_system/xfs_update"
+        json: {
+          # "dev_path": "${get_block_with_uuid_mark(uuid_01)}",
+          "dev_path": "$block01",
+          "fs_label": "DataDisk",
+          "fs_uuid": "${get_uuid_with_uuid_mark(uuid_01)}"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: File System Mount Info
+    request:
+        method: POST
+        url: "/file_system/info"
+        json: {
+          "sources": [],
+          "targets": [],
+          "infos": []
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: File System Mount
+    request:
+        method: POST
+        url: "/file_system/mount"
+        json: {
+          # "source": "${get_block_with_uuid_mark(uuid_01)}",
+          "source": "$block01",
+          "target": "/tmp/pytest_xdfs",
+          "fstype": "xfs",
+          "options": [
+            "_netdev",
+            "rw",
+            "noatime",
+            "inode64",
+            "nouuid",
+            "nobarrier",
+            "logbufs=8",
+            "logbsize=256k"
+          ]
+
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+-
+    name: File System Remount
+    request:
+        method: POST
+        url: "/file_system/remount"
+        json: {
+          # "source": "${get_block_with_uuid_mark(uuid_01)}",
+          "source": "$block01",
+          "target": "/tmp/pytest_xdfs",
+          "options": [
+            "_netdev",
+            "rw",
+            "noatime",
+            "inode64",
+            "nouuid",
+            "nobarrier",
+            "logbufs=8",
+            "logbsize=256k"
+          ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: File System Bind
+    request:
+        method: POST
+        url: "/file_system/bind"
+        json: {
+          "source": "/tmp/pytest_xdfs",
+          "target": "/tmp/pytest_xdfs_bind",
+          "options": [
+            "_netdev",
+            "rw",
+            "noatime"
+          ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: File System Rebind
+    request:
+        method: POST
+        url: "/file_system/rebind"
+        json: {
+          "source": "/tmp/pytest_xdfs",
+          "target": "/tmp/pytest_xdfs_bind",
+          "options": []
+
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: File System Umount Bind
+    request:
+        method: POST
+        url: "/file_system/umount"
+        json: {
+          "target": "/tmp/pytest_xdfs_bind",
+          "lazy": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: File System Umount
+    request:
+        method: POST
+        url: "/file_system/umount"
+        json: {
+          "target": "/tmp/pytest_xdfs",
+          "lazy": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: File System Fstab List
+    request:
+        method: POST
+        url: "/file_system/fstab/list"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: File System Fstab Update
+    request:
+        method: POST
+        url: "/file_system/fstab/update"
+        json: {
+          # "mnt_fsname": "${get_block_with_uuid_mark(uuid_01)}",
+          "mnt_fsname": "$block01",
+          "mnt_dir": "/mnt/pytest_xdfs",
+          "mnt_type": "auto",
+          "mnt_opts": [
+            "_netdev",
+            "rw",
+            "noatime",
+            "inode64",
+            "nouuid",
+            "nobarrier",
+            "logbufs=8",
+            "logbsize=256k"            
+          ],
+          "mnt_freq": 0,
+          "mnt_passno": 0
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: File System Fstab Delete
+    request:
+        method: POST
+        url: "/file_system/fstab/delete"
+        json: {
+          # "mnt_fsname": "${get_block_with_uuid_mark(uuid_01)}",
+          "mnt_fsname": "$block01",
+          "mnt_dir": "/mnt/pytest_xdfs",
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+
+

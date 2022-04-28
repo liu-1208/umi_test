@@ -1,0 +1,189 @@
+
+config:
+    name: "Cluster Volume Quota Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host: ${P(umi_cluster/data/storage.csv)}
+    variables:
+        vol_name: vol-01
+
+-
+    name: Cluster Volume Quota Enable
+    request:
+        method: POST
+        url: "/cluster/volume/quota/enable"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota List Usage
+    request:
+        method: POST
+        url: "/cluster/volume/quota/list_usage"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "quota_path": "/quota-test"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota List Objects
+    request:
+        method: POST
+        url: "/cluster/volume/quota/list_objects"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "quota_path": "/quota-test"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota Limit Soft
+    request:
+        method: POST
+        url: "/cluster/volume/quota/limit_soft"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "soft_percent": "90"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota Limit Usage
+    request:
+        method: POST
+        url: "/cluster/volume/quota/limit_usage"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "quota_path": "/quota-test",
+            "usage_size": "10MB",
+            "usage_percent": "90"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota Limit Objects
+    request:
+        method: POST
+        url: "/cluster/volume/quota/limit_objects"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "quota_path": "/quota-test",
+            "objects_number": "100",
+            "objects_percent": "90"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota Alert Time
+    request:
+        method: POST
+        url: "/cluster/volume/quota/alert_time"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "quota_time": "86400"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota Soft Timeout
+    request:
+        method: POST
+        url: "/cluster/volume/quota/soft_timeout"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "quota_time": "1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota Hard Timeout
+    request:
+        method: POST
+        url: "/cluster/volume/quota/hard_timeout"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "quota_time": "1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Quota Deem Statfs
+    request:
+        method: POST
+        url: "/cluster/volume/quota/deem_statfs"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "is_enable": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Inode Quota Enable
+    request:
+        method: POST
+        url: "/cluster/volume/inode_quota/enable"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Inode Quota Disable
+    request:
+        method: POST
+        url: "/cluster/volume/inode_quota/disable"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota Remove Usage
+    request:
+        method: POST
+        url: "/cluster/volume/quota/remove_usage"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "quota_path": "/quota-test"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota Remove Objects
+    request:
+        method: POST
+        url: "/cluster/volume/quota/remove_objects"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "quota_path": "/quota-test"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Quota Disable
+    request:
+        method: POST
+        url: "/cluster/volume/quota/disable"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+        }
+    validate:
+        - eq: ["status_code", 200]
