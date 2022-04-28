@@ -1,0 +1,20 @@
+config:
+    name: Cifs Share Delete
+    base_url: ${ENV(API_URL)}
+    variables:
+        ret_code: 200
+        req_host: 127.0.0.1
+        name: share-01
+
+teststeps:
+-
+    name: API
+    request:
+        url: /cluster/cifs/share/delete
+        method: POST
+        json: ${gen_data(
+                req_host=$req_host,
+                name=$name
+            )}
+    validate:
+        - eq: ["status_code", $ret_code]

@@ -1,0 +1,279 @@
+
+config:
+    name: "request methods testcase with functions"
+    # base_url: ${ENV(node_url)}
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        user-passwd-lun_name-lun_size-target_iqn-target_address: ${P(umi_node/data/tcmu.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    variables:
+        host01: "${get_host_once(host01)}"
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+-
+    name: Tcmu Service Status
+    request:
+        method: POST
+        url: "/iscsi/tcmu/service/status"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Service Init
+    request:
+        method: POST
+        url: "/iscsi/tcmu/service/init"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Service Enable
+    request:
+        method: POST
+        url: "/iscsi/tcmu/service/enable"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Lun Info
+    request:
+        method: POST
+        url: "/iscsi/tcmu/lun/info"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Lun Vfs Update
+    request:
+        method: POST
+        url: "/iscsi/tcmu/lun/vfs_update"
+        json: {
+          "lun_name": "$lun_name",
+          "lun_mode": "fileio",
+          # "path": "$path",
+          "path": "/reexport/vol-01/.iscsi/$lun_name.raw",
+          "lun_size": "$lun_size",
+          "thin": true,
+          "write_back": true,
+          "readonly": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Lun Glfs Update
+    request:
+        method: POST
+        url: "/iscsi/tcmu/lun/glfs_update"
+        json: {
+          "lun_name": "$lun_name",
+          # "path": "$path",
+          "path": "/.iscsi/$lun_name.raw",
+          "vol_name": "$vol_name",
+          "host": "127.0.0.1",
+          "lun_size": "$lun_size",
+          "thin": true,
+          "buff": 1024
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Lun Status
+    request:
+        method: POST
+        url: "/iscsi/tcmu/lun/status"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Target Info
+    request:
+        method: POST
+        url: "/iscsi/tcmu/target/info"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Target Update
+    request:
+        method: POST
+        url: "/iscsi/tcmu/target/update"
+        json: {  
+        "wwn": "$target_iqn",
+        "port": 3260,
+        "userid": "$user",
+        "password": "$passwd",
+        "mutual_userid": "$user",
+        "mutual_password": "$passwd",
+        "luns": [{
+                    "tpg_lun": 0, 
+                    "lun_name": "$lun_name", 
+                    "lun_mode": "fileio"
+                }],
+        "acls": [{
+                    "node_wwn": "iqn.2021-08.cluster-01.target-eee",
+                    "chap_mutual_password": "111111",
+                    "chap_mutual_userid": "user01",
+                    "chap_password": "123456",
+                    "chap_userid": "user01",
+                    "mapped_luns": [
+                      {
+                        "index": 0,
+                        "tpg_lun": 0,
+                        "write_protect": "false"
+                      }
+                    ]
+                }]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Target Status
+    request:
+        method: POST
+        url: "/iscsi/tcmu/target/status"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Target Lun Map
+    request:
+        method: POST
+        url: "/iscsi/tcmu/target/lun_map"
+        json: {
+          "wwn": "$target_iqn",
+          "luns": [{
+              "lun_name": "$lun_name", 
+              "lun_mode": "fileio"
+          }]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Target Delete
+    request:
+        method: POST
+        url: "/iscsi/tcmu/target/delete"
+        json: {
+          "wwn": "$target_iqn",
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Lun Vfs Delete
+    request:
+        method: POST
+        url: "/iscsi/tcmu/lun/vfs_delete"
+        json: {
+          "path": "/reexport/vol-01/.iscsi/$lun_name.raw",
+          "clean_data": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Lun Glfs Delete
+    request:
+        method: POST
+        url: "/iscsi/tcmu/lun/glfs_delete"
+        json: {
+          "path": "/.iscsi/$lun_name.raw",
+          "vol_name": "$vol_name",
+          "host": "127.0.0.1",
+          "clean_data": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Config Export
+    request:
+        method: POST
+        url: "/iscsi/tcmu/config/export"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Config Import
+    request:
+        method: POST
+        url: "/iscsi/tcmu/config/import"
+        json: {
+                "config": {
+                  "lun": {
+                    "/.iscsi/lun-01.raw": {
+                      "lun_name": "$lun_name",
+                      "lun_size": 10485760,
+                      "lun_mode": "user:glfs",
+                      "path": "/.iscsi/$lun_name.raw",
+                      "vol_name": "$vol_name",
+                      "host": "127.0.0.1",
+                      "wwn": "766F6C2D30313A6C756E2D3031"
+                    },
+                    "/dev/sdb": {
+                      "lun_name": "lun-02",
+                      "lun_size": 17179869184,
+                      "lun_mode": "fileio",
+                      "path": "/dev/sdb",
+                      "wwn": "2F6465762F7364623A6C756E2D3032"
+                    },
+                    "/reexport/vol-01/.iscsi/$lun_name.raw": {
+                      "lun_name": "$lun_name",
+                      "lun_size": 10737418240,
+                      "lun_mode": "fileio",
+                      "path": "/reexport/vol-01/.iscsi/$lun_name.raw",
+                      "wwn": "2F72656578706F72742F766F6C2D30312F2E69736373692F6C756E2D30312E7261773A6C756E2D3031"
+                    }
+                  },
+                  "target": {
+                    "$target_iqn": {
+                      "wwn": "$target_iqn",
+                      "userid": "$user",
+                      "password": "$passwd",
+                      "mutual_userid": "$user",
+                      "mutual_password": "$passwd",
+                      "port": 3260,
+                      "luns": [
+                        {
+                          "tpg_lun": 0,
+                          "lun_name": "$lun_name",
+                          "lun_mode": "fileio"
+                        }
+                      ],
+                      "acls": [
+                        {
+                          "node_wwn": "iqn.2021-08.cluster-01.target-client01",
+                          "chap_userid": "$user",
+                          "chap_password": "$passwd",
+                          "chap_mutual_userid": "$user",
+                          "chap_mutual_password": "$passwd",
+                          "mapped_luns": [
+                            {
+                              "index": 0,
+                              "tpg_lun": 0,
+                              "write_protect": "false"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Tcmu Service Disable
+    request:
+        method: POST
+        url: "/iscsi/tcmu/service/disable"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+  
+

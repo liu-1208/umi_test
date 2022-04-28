@@ -1,0 +1,94 @@
+config:
+    name: ${ENV(umi_cluster_test_title)}
+    base_url: ${ENV(umi_cluster_url)}
+
+teststeps:
+
+# 创建本地用户组 group-01
+-
+    name: Local Group Update
+    request:
+        method: POST
+        url: "/cluster/user/local/group/update"
+        json: {
+          "req_host": "127.0.0.1",
+          "group": "group-01",
+          "gid": 1011
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 创建本地用户组 group-02
+-
+    name: Local Group Update
+    request:
+        method: POST
+        url: "/cluster/user/local/group/update"
+        json: {
+          "req_host": "127.0.0.1",
+          "group": "group-02",
+          "gid": 1012
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 创建本地用户组 group-03
+-
+    name: Local Group Update
+    request:
+        method: POST
+        url: "/cluster/user/local/group/update"
+        json: {
+          "req_host": "127.0.0.1",
+          "group": "group-03",
+          "gid": 1013
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 查看本地用户组
+-
+    name: Local Group List
+    request:
+        method: POST
+        url: "/cluster/user/local/group/list"
+        json: {
+          "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+# 创建本地用户 user-01
+-
+    name: Local User Update
+    request:
+        method: POST
+        url: "/cluster/user/local/user/update"
+        json: {
+          "req_host": "127.0.0.1",
+          "user": "user-01",
+          "passwd": "123456",
+          "groups": [
+            "group-01",
+            "group-02",
+            "group-03"
+          ],
+          "uid": 1011
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+# 查看本地用户
+-
+    name: Local User List
+    request:
+        method: POST
+        url: "/cluster/user/local/user/list"
+        json: {
+          "req_host": "127.0.0.1"
+        }
+    validate:
+        - eq: ["status_code", 200]

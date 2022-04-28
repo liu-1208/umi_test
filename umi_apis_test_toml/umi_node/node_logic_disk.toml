@@ -1,0 +1,43 @@
+module = "Logic Disk"
+interface_names = [
+    "Logic_Disk_List",
+    "Logic_Disk_Info",
+    "Logic_Disk_Wipe",
+#    "Logic_Disk_Blink"
+]
+
+
+[Logic_Disk_List]
+interface_desc = "获取块设备列表."
+interface_path = "/storage/logic_disk/list"
+requests_data_time = 2
+interface_cmd = ""
+requests_data_1 = {}
+requests_data_2 = { types=["None", "disk", "part", "lvm", "raid1", "raid5", "rom", "mpath"] }
+
+
+[Logic_Disk_Info]
+interface_desc = "获取块设备信息."
+interface_path = "/storage/logic_disk/info"
+interface_cmd = ""
+requests_data_time = 4
+requests_data_1 = {}
+requests_data_2 = { devs=["/dev/sdc"] }
+requests_data_3 = { devs=["/dev/sdc"], types=["None", "disk", "part", "lvm", "raid1", "raid5", "rom", "mpath"] }
+requests_data_4 = { devs=["/dev/sdc"], types=["None", "disk", "part", "lvm", "raid1", "raid5", "rom", "mpath"], infos= ["MAJ:MIN", "NAME", "PATH", "SIZE", "TYPE", "FSTYPE", "LABEL", "UUID", "MOUNTPOINT"] }
+
+
+[Logic_Disk_Wipe]
+interface_desc = "块设备擦除，擦除分区信息、软raid、LVM等，不可逆慎重使用."
+interface_path = "/storage/logic_disk/wipe"
+interface_cmd = "wipefs --all /dev/sdg"
+requests_data_time = 1
+requests_data_1 = { dev_path="/dev/sdg" }
+
+
+[Logic_Disk_Blink]
+interface_desc = "块设备磁盘灯闪烁检测，使用间隔读取数据模拟灯闪烁，可能包含多个相关物理设备."
+interface_path = "/storage/logic_disk/blink"
+interface_cmd = ""
+requests_data_time = 1
+requests_data_1 = { dev_path="/dev/sdg", total_time=90, read_time=15, sleep_time=5 }

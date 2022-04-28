@@ -1,0 +1,31 @@
+
+config:
+    name: "request methods testcase with functions"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+
+teststeps:
+-
+    name: Gluster Peer Detach host_ip_02
+    request:
+        method: POST
+        url: "/gluster/peer/detach"
+        json: {
+          "host": "$host_ip_02",
+          "force": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Peer Detach host_ip_01
+    request:
+        method: POST
+        url: "/gluster/peer/detach"
+        json: {
+          "host": "$host_ip_01",
+          "force": false
+        }
+    validate:
+        - eq: ["status_code", 200]

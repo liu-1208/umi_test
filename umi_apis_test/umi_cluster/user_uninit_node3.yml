@@ -1,0 +1,60 @@
+config:
+    name: ${ENV(umi_cluster_test_title)}
+    base_url: ${ENV(umi_cluster_url)}
+
+teststeps:
+
+# 删除本地用户 user-01
+-
+    name: Local User Delete
+    request:
+        method: POST
+        url: "/cluster/user/local/user/delete"
+        json: {
+          "req_host": "127.0.0.1",
+          "user": "user-01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 删除本地用户组 group-01
+-
+    name: Local Group Delete
+    request:
+        method: POST
+        url: "/cluster/user/local/group/delete"
+        json: {
+          "req_host": "127.0.0.1",
+          "group": "group-01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 删除本地用户组 group-02
+-
+    name: Local Group Delete
+    request:
+        method: POST
+        url: "/cluster/user/local/group/delete"
+        json: {
+          "req_host": "127.0.0.1",
+          "group": "group-02"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 删除本地用户组 group-03
+-
+    name: Local Group Delete
+    request:
+        method: POST
+        url: "/cluster/user/local/group/delete"
+        json: {
+          "req_host": "127.0.0.1",
+          "group": "group-03"
+        }
+    validate:
+        - eq: ["status_code", 200]

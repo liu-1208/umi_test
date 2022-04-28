@@ -1,0 +1,68 @@
+module = "DNS"
+interface_names = [
+    "Hostname_Get",
+    "Hostname_Set",
+    "Host_Entry_List",
+    "Host_Entry_Set",
+    "Host_Entry_Update",
+    "Host_Entry_Delete",
+    "Get_Nsswitch",
+    "Update_Nsswitch"
+]
+
+[Hostname_Get]
+interface_desc = "获取本机hostname."
+interface_path = "/network/dns/hostname/get"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Hostname_Set]
+interface_desc = "设置本机hostname."
+interface_path = "/network/dns/hostname/set"
+requests_data_time = 1
+requests_data_1 = { hostname="node3" }
+
+
+[Host_Entry_List]
+interface_desc = "获取本地域名解析配置项(/etc/hosts)."
+interface_path = "/network/dns/hosts/list"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Host_Entry_Set]
+interface_desc = "向主机名静态表中设置所有条目(/etc/hosts)."
+interface_path = "/network/dns/hosts/set"
+requests_data_time = 1
+requests_data_1 = { entry_list=[{ip_address="127.0.0.1", hostnames=["localhost", "localhost.localdomain", "localhost4", "localhost4.localdomain4" ]}, {ip_address="::1", hostnames=["localhost", "localhost.localdomain", "localhost6", "localhost6.localdomain6" ]}] }
+
+
+[Host_Entry_Update]
+interface_desc = "向主机名静态表中添加条目(/etc/hosts)."
+interface_path = "/network/dns/hosts/update"
+requests_data_time = 1
+requests_data_1 = { entry_list=[{ip_address="127.0.0.1", hostnames=["localhost", "localhost.localdomain", "localhost4", "localhost4.localdomain4" ]}, {ip_address="::1", hostnames=["localhost", "localhost.localdomain", "localhost6", "localhost6.localdomain6" ]}] }
+
+
+[Host_Entry_Delete]
+interface_desc = "删除本地域名解析条目(/etc/hosts)."
+interface_path = "/network/dns/hosts/delete"
+requests_data_time = 1
+requests_data_1 = { ip_list=["10.10.10.11"] }
+
+
+[Get_Nsswitch]
+interface_desc = "获取名字服务切换配置(/etc/nsswitch.conf)."
+interface_path = "/network/dns/nsswitch/get"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Update_Nsswitch]
+interface_desc = "更新名字服务切换配置(/etc/nsswitch.conf)."
+interface_path = "/network/dns/nsswitch/update"
+requests_data_time = 1
+requests_data_1 = { cfg={ hosts="files dns myhostname"} }
+
+

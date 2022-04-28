@@ -1,0 +1,103 @@
+
+config:
+    name: "request methods testcase with functions"
+    # base_url: ${ENV(node_url)}
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        mode-host01-host02-host03: ${P(umi_node/data/storage.csv)}
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+
+-
+    name: Gluster Volume List
+    request:
+        method: POST
+        url: "/gluster/volume/list"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Info
+    request:
+        method: POST
+        url: "/gluster/volume/info"
+        json: {
+          "vol_name": "all"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Status
+    request:
+        method: POST
+        url: "/gluster/volume/status"
+        json: {
+          "vol_name": "all"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Status Detail
+    request:
+        method: POST
+        url: "/gluster/volume/status_detail"
+        json: {
+          "vol_name": "all"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+    
+-
+    name: Gluster Volume Create Base
+    testcase: umi_node/glusterfs/module/volume_create_base.yml
+
+-
+    name: Gluster Volume List
+    request:
+        method: POST
+        url: "/gluster/volume/list"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Info
+    request:
+        method: POST
+        url: "/gluster/volume/info"
+        json: {
+          "vol_name": "all"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Status
+    request:
+        method: POST
+        url: "/gluster/volume/status"
+        json: {
+          "vol_name": "all"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Status Detail
+    request:
+        method: POST
+        url: "/gluster/volume/status_detail"
+        json: {
+          "vol_name": "all"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml

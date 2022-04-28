@@ -1,0 +1,165 @@
+
+config:
+    name: "Node Ftp Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host-sharename-username-password-path: ${P(umi_cluster/data/ftp.csv)}
+
+teststeps:
+-
+    name: Create Test Group
+    request:
+        method: POST
+        url: "/cluster/user/local/group/update"
+        json: {
+          "req_host": "$req_host",
+          "group": "$username", 
+          "gid": 8889
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Create Test User
+    request:
+        method: POST
+        url: "/cluster/user/local/user/update"
+        json: {
+          "req_host": "$req_host",
+          "user": "$username", 
+          "passwd": "$password",
+          "group":"$username",
+          "uid": 8889,
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Ftp Service Enable
+    request:
+        method: POST
+        url: "/cluster/smbftpd/service/enable"
+        json: {
+          "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Ftp Service Status
+    request:
+        method: POST
+        url: "/cluster/smbftpd/service/status"
+        json: {
+          "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Ftp Cfg Update
+    request:
+        method: POST
+        url: "/cluster/smbftpd/cfg/update"
+        json: {
+            "req_host": "$req_host",
+            "ServerName": "xdfs",
+            "ShowProgramVersion": true,
+            "Port": 21,
+            "EmptyPasswdLogin": true,
+            "AnonymousLogin": true,
+            "DefaultMode": "SMB",
+            "ShareConfPath": "/usr/local/etc/smbftpd/smbftpd_share.conf",
+            "LogCommand": true,
+            "DoWtmpLog": true,
+            "DebugMode": true,
+            "TransferLog": "/var/log/smbftpd.log",
+            "RequireValidShell": false,
+            "SecurityPolicyMode": 1,
+            "SSLKeyFile": "/usr/local/etc/smbftpd/ssl.key/server.key",
+            "SSLCertFile": "/usr/local/etc/smbftpd/ssl.crt/server.crt"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Ftp Cfg List
+    request:
+        method: POST
+        url: "/cluster/smbftpd/cfg/list"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Ftp Scfg Update
+    request:
+        method: POST
+        url: "/cluster/smbftpd/scfg/update"
+        json: {
+            "req_host": "$req_host",
+            "share_name": "$sharename",
+            "path": "$path",
+            "rw": "$username",
+            "ro": "$username",
+            "browseable": true,
+            "disable_ls": "anonymous, @$username",
+            "disable_modify": "anonymous, @$username",
+            "disable_download": "anonymous, @$username"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Ftp Scfg List
+    request:
+        method: POST
+        url: "/cluster/smbftpd/scfg/list"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Ftp Scfg Delete
+    request:
+        method: POST
+        url: "/cluster/smbftpd/scfg/delete"
+        json: {
+            "req_host": "$req_host",
+            "share_name": "$sharename"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Ftp Service Disable
+    request:
+        method: POST
+        url: "/cluster/smbftpd/service/disable"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+# -
+#     name: Ftp Config Export
+#     request:
+#         method: POST
+#         url: "/cluster/smbftpd/config/export"
+#         json: {
+#             "req_host": "$req_host"
+#         }
+#     validate:
+#         - eq: ["status_code", 200]
+# -
+#     name: Ftp Config Import
+#     request:
+#         method: POST
+#         url: "cluster/smbftpd/config/import"
+#         json: {
+#             "req_host": "$req_host",
+#             "config": "str"
+#         }
+#     validate:
+#         - eq: ["status_code", 200]
+
+
+
+

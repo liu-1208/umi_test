@@ -1,0 +1,22 @@
+config:
+    name: Iscsi User Update
+    base_url: ${ENV(API_URL)}
+    variables:
+        ret_code: 200
+        req_host: 127.0.0.1
+        user: user-01
+        passwd: 123456
+
+teststeps:
+-
+    name: API
+    request:
+        url: /cluster/iscsi/user/update
+        method: POST
+        json: ${gen_data(
+                req_host=$req_host,
+                user=$user,
+                passwd=$passwd
+            )}
+    validate:
+        - eq: ["status_code", $ret_code]

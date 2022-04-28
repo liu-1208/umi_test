@@ -1,0 +1,22 @@
+
+config:
+    name: "Cluster Volume Statedump Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host: ${P(umi_cluster/data/storage.csv)}
+    variables:
+        vol_name: vol-01
+
+teststeps:
+-
+    name: Cluster Volume Statedump
+    request:
+        method: POST
+        url: "/cluster/volume/statedump"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+

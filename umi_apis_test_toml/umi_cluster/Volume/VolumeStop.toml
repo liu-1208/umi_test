@@ -1,0 +1,25 @@
+# _*_ coding: utf-8 _*_
+
+module = "Volume"
+interface_names = [
+    "Cluster_Volume_Stop",
+    "Cluster_Volume_Delete",
+]
+
+
+[Cluster_Volume_Stop]
+interface_desc = "停止卷"
+interface_path = "/cluster/volume/stop"
+requests_data_time = 1
+[Cluster_Volume_Stop.requests_data_1]
+req_host="172.18.123.73"
+vol_name="vol-01"
+
+
+[Cluster_Volume_Delete]
+interface_desc = "删除卷"
+interface_path = "/cluster/volume/delete"
+requests_data_time = 1
+[Cluster_Volume_Delete.requests_data_1]
+req_host="172.18.123.73"
+vol_name="vol-01"

@@ -1,0 +1,125 @@
+
+config:
+    name: "Cluster Bitrot Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host: ${P(umi_cluster/data/storage.csv)}
+    variables:
+        vol_name: vol-01
+
+teststeps:
+-
+    name: Cluster Volume Bitrot Enable
+    request:
+        method: POST
+        url: "/cluster/volume/bitrot/enable"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Bitrot Disable
+    request:
+        method: POST
+        url: "/cluster/volume/bitrot/disable"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Bitrot Scrud Pause
+    request:
+        method: POST
+        url: "/cluster/volume/bitrot/scrub/pause"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Bitrot Scrud Resume
+    request:
+        method: POST
+        url: "/cluster/volume/bitrot/scrub/resume"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Bitrot Scrud Status
+    request:
+        method: POST
+        url: "/cluster/volume/bitrot/scrub/status"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Bitrot Scrud Ondemand
+    request:
+        method: POST
+        url: "/cluster/volume/bitrot/scrub/ondemand"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Bitrot Scurb Frequency
+    request:
+        method: POST
+        url: "/cluster/volume/bitrot/scurb_frequency"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "frequency_type": "hourly"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Bitrot Scurb Throttle
+    request:
+        method: POST
+        url: "/cluster/volume/bitrot/scurb_throttle"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "throttle_type": "lazy"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Bitrot Singer Threads
+    request:
+        method: POST
+        url: "/cluster/volume/bitrot/singer_theads"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "threads_count": 16
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Bitrot Singing Time
+    request:
+        method: POST
+        url: "/cluster/volume/bitrot/singing_time"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "time_in_secs": 16
+        }
+    validate:
+        - eq: ["status_code", 200]
+

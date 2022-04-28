@@ -1,0 +1,155 @@
+config:
+    name: ${ENV(umi_cluster_test_title)}
+    base_url: ${ENV(umi_cluster_url)}
+
+teststeps:
+
+# 擦除块设备，dev_path修改为具体的设备名
+-
+    name: Block Device Wipe
+    request:
+        method: POST
+        url: "/storage/block_device/wipe"
+        json: {
+            "req_host": "127.0.0.1",
+            "dev_path": "/dev/sde"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+# 初始化块设备，dev_path修改为具体的设备名
+-
+    name: Block Device Init
+    request:
+        method: POST
+        url: "/storage/block_device/init"
+        json: {
+            "req_host": "127.0.0.1",
+            "dev_path": "/dev/sde"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+# 挂载块设备，dev_path修改为具体的设备名
+-
+    name: Block Device Enable
+    request:
+        method: POST
+        url: "/storage/block_device/enable"
+        json: {
+            "req_host": "127.0.0.1",
+            "dev_path": "/dev/sde"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+## 添加集群节点 172.169.100.71
+#-
+#    name: Cluster Node Append
+#    request:
+#        method: POST
+#        url: "/cluster/node/append"
+#        json: {
+#           "req_host": "127.0.0.1",
+#           "node_addr": "172.169.100.71"
+#        }
+#    validate:
+#        - eq: ["status_code", 200]
+
+## 添加集群节点 172.169.100.72
+#-
+#    name: Cluster Node Append
+#    request:
+#        method: POST
+#        url: "/cluster/node/append"
+#        json: {
+#           "req_host": "127.0.0.1",
+#           "node_addr": "172.169.100.72"
+#        }
+#    validate:
+#        - eq: ["status_code", 200]
+
+## 添加集群节点 172.169.100.73
+#-
+#    name: Cluster Node Append
+#    request:
+#        method: POST
+#        url: "/cluster/node/append"
+#        json: {
+#           "req_host": "127.0.0.1",
+#           "node_addr": "172.169.100.73"
+#        }
+#    validate:
+#        - eq: ["status_code", 200]
+
+# 创建卷
+-
+    name: Cluster Volume Create
+    request:
+        method: POST
+        url: "/cluster/volume/create"
+        json: {
+            "req_host": "127.0.0.1",
+            "vol_name": "umi_test",
+            "remote_mnts": [
+              "node1.tc.com:/interface_todo_list/d6ca1aa5-3c4f-4379-ad02-37f6390786c7",
+              "node2.tc.com:/interface_todo_list/68b18b4d-63ed-474c-87e3-c4ffad7aacfe",
+              "node3.tc.com:/interface_todo_list/d050633b-1735-49ca-a897-bf883c8d9b41"
+            ],
+            "vol_type": "Repalica",
+            "vol_pattern": "3",
+            "rdma": false
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+# 开启卷
+-
+    name: Cluster Volume Start
+    request:
+        method: POST
+        url: "/cluster/volume/start"
+        json: {
+            "req_host": "127.0.0.1",
+            "vol_name": "umi_test"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+## 获取卷状态
+#-
+#    name: Cluster Volume Status
+#    request:
+#        method: POST
+#        url: "/cluster/volume/status"
+#        json: {
+#           "req_host": "127.0.0.1"
+#        }
+#    validate:
+#        - eq: ["status_code", 200]
+
+# 关闭卷
+-
+    name: Cluster Volume Stop
+    request:
+        method: POST
+        url: "/cluster/volume/stop"
+        json: {
+            "req_host": "127.0.0.1",
+            "vol_name": "umi_test"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+# 删除卷
+-
+    name: Cluster Volume Delete
+    request:
+        method: POST
+        url: "/cluster/volume/delete"
+        json: {
+            "req_host": "127.0.0.1",
+            "vol_name": "umi_test"
+        }
+    validate:
+        - eq: ["status_code", 200]

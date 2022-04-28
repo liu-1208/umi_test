@@ -1,0 +1,21 @@
+module = "Physic Disk"
+interface_names = [
+    "Physic_Disk_List",
+    "Physic_Disk_Info"
+]
+
+
+[Physic_Disk_List]
+interface_desc = "通过smartctl工具获取物理磁盘列表，有可能包含非硬盘类的SCSI设备"
+interface_path = "/storage/physic_disk/list"
+requests_data_time = 1
+requests_data_1 = { include_sg = true }
+
+
+[Physic_Disk_Info]
+interface_desc = "获取物理磁盘信息列表."
+interface_path = "/storage/physic_disk/info"
+requests_data_time = 1
+requests_data_1 = { devs = ["/dev/sdi"], smartinfo=false, raw_text=false }
+
+

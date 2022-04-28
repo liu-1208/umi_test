@@ -1,0 +1,28 @@
+config:
+    name: Iscsi Lun Update
+    base_url: ${ENV(API_URL)}
+    variables:
+        ret_code: 200
+        req_host: 127.0.0.1
+        lun_name: lun-01
+        lun_size: 10GiB
+        vol_name: vol-01
+        thin: --Empty--
+        glfs_api: --Empty--
+
+teststeps:
+-
+    name: API
+    request:
+        url: /cluster/iscsi/lun/update
+        method: POST
+        json: ${gen_data(
+                req_host=$req_host,
+                lun_name=$lun_name,
+                lun_size=$lun_size,
+                vol_name=$vol_name,
+                thin=$thin,
+                glfs_api=$glfs_api
+            )}
+    validate:
+        - eq: ["status_code", $ret_code]

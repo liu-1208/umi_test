@@ -1,0 +1,2 @@
+admin_user,admin_password,api_port,console_port,username,password,group,bucket,policy
+minioadmin,12345678,9010,19010,user01,12345678,group01,bucket01,policy01

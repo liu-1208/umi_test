@@ -1,0 +1,35 @@
+
+config:
+    name: "Node Gluster Volume Brick Add"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        host01-host02: ${P(umi_node/data/storage.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    #variables:
+    #    host01: $host01
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+
+-
+    name: Gluster Brick Add
+    request:
+        method: POST
+        url: "/gluster/brick/add"
+        json: {
+          "vol_name": "$vol_name",
+          "bricks": [
+            "$host02:/data/${get_uuid_with_uuid_mark(uuid_02)}/$vol_name"
+          ],
+        "force": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml

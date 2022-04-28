@@ -1,0 +1,107 @@
+
+config:
+    name: "Node Dns Test"
+    # base_url: ${ENV(node_url)}
+    base_url: ${get_node_url()}
+    export: ["hostname"]
+
+teststeps:
+-
+    name: Hostname Get
+    request:
+        method: POST
+        url: "/network/dns/hostname/get"
+        json: {}
+    extract:
+      hostname: body.data
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Hostname Set
+    request:
+        method: POST
+        url: "/network/dns/hostname/set"
+        json: {
+          "hostname": "$hostname"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Hostname Entry List
+    request:
+        method: POST
+        url: "/network/dns/hosts/list"
+        json: {}
+    extract:
+        entry_list: body.data
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Hostname Entry Set
+    request:
+        method: POST
+        url: "/network/dns/hosts/set"
+        json: {
+          "host_entry_list": "$entry_list"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Host Entry Update
+    variables: 
+        hostentry: {
+          "ip_address": "8.8.8.8",
+          "hostnames": [
+             "pytest_host_entry"
+          ]
+        }
+    request:
+        method: POST
+        url: "/network/dns/hosts/update"
+        json: { 
+          "host_entry_list": [ $hostentry ] 
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Host Entry Delete
+    request:
+        method: POST
+        url: "/network/dns/hosts/delete"
+        json: { 
+          "ip_list": [ "8.8.8.8" ] 
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Get Nsswitch
+    request:
+        method: POST
+        url: "/network/dns/nsswitch/get"
+        json: {}
+    extract:
+        hosts_cfg: body.data.hosts
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Update Nsswitch
+    request:
+        method: POST
+        url: "/network/dns/nsswitch/update"
+        json: { 
+          "cfg": {
+            "hosts": "$hosts_cfg" 
+          }
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+
+
+
+

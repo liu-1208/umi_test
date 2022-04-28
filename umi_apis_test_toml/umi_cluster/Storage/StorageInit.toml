@@ -1,0 +1,64 @@
+module = "Storage"
+interface_names = [
+    "Block_Device_Init",
+    "Block_Device_Enable",
+    "File_System_Status"
+]
+
+
+[Block_Device_Init]
+interface_desc = "初始化指定块设备，格式化为XFS文件系统，设置DataDevice标签"
+interface_path = "/storage/block_device/init"
+requests_data_time = 18
+requests_data_1 = { req_host="172.18.123.71", dev_path="/dev/sdb", fs_uuid="12345678-1234-1234-1234-12345678901b"}
+requests_data_2 = { req_host="172.18.123.71", dev_path="/dev/sdc", fs_uuid="12345678-1234-1234-1234-12345678901c"}
+requests_data_3 = { req_host="172.18.123.71", dev_path="/dev/sdd", fs_uuid="12345678-1234-1234-1234-12345678902b"}
+requests_data_4 = { req_host="172.18.123.71", dev_path="/dev/sde", fs_uuid="12345678-1234-1234-1234-12345678902c"}
+requests_data_5 = { req_host="172.18.123.71", dev_path="/dev/sdf", fs_uuid="12345678-1234-1234-1234-12345678903b"}
+requests_data_6 = { req_host="172.18.123.71", dev_path="/dev/sdg", fs_uuid="12345678-1234-1234-1234-12345678903c"}
+requests_data_7 = { req_host="172.18.123.72", dev_path="/dev/sdb", fs_uuid="12345678-1234-1234-1234-12345678901b"}
+requests_data_8 = { req_host="172.18.123.72", dev_path="/dev/sdc", fs_uuid="12345678-1234-1234-1234-12345678901c"}
+requests_data_9 = { req_host="172.18.123.72", dev_path="/dev/sdd", fs_uuid="12345678-1234-1234-1234-12345678902b"}
+requests_data_10 = { req_host="172.18.123.72", dev_path="/dev/sde", fs_uuid="12345678-1234-1234-1234-12345678902c"}
+requests_data_11 = { req_host="172.18.123.72", dev_path="/dev/sdf", fs_uuid="12345678-1234-1234-1234-12345678903b"}
+requests_data_12 = { req_host="172.18.123.72", dev_path="/dev/sdg", fs_uuid="12345678-1234-1234-1234-12345678903c"}
+requests_data_13 = { req_host="172.18.123.73", dev_path="/dev/sdb", fs_uuid="12345678-1234-1234-1234-12345678901b"}
+requests_data_14 = { req_host="172.18.123.73", dev_path="/dev/sdc", fs_uuid="12345678-1234-1234-1234-12345678901c"}
+requests_data_15 = { req_host="172.18.123.73", dev_path="/dev/sdd", fs_uuid="12345678-1234-1234-1234-12345678902b"}
+requests_data_16 = { req_host="172.18.123.73", dev_path="/dev/sde", fs_uuid="12345678-1234-1234-1234-12345678902c"}
+requests_data_17 = { req_host="172.18.123.73", dev_path="/dev/sdf", fs_uuid="12345678-1234-1234-1234-12345678903b"}
+requests_data_18 = { req_host="172.18.123.73", dev_path="/dev/sdg", fs_uuid="12345678-1234-1234-1234-12345678903c"}
+
+
+[Block_Device_Enable]
+interface_desc = "挂载块设备并设置开机挂载，返回挂载后块设备状态信息"
+interface_path = "/storage/block_device/enable"
+requests_data_time = 18
+requests_data_1 = { req_host="172.18.123.71", dev_path="/dev/sdb" }
+requests_data_2 = { req_host="172.18.123.71", dev_path="/dev/sdc" }
+requests_data_3 = { req_host="172.18.123.71", dev_path="/dev/sdd" }
+requests_data_4 = { req_host="172.18.123.71", dev_path="/dev/sde" }
+requests_data_5 = { req_host="172.18.123.71", dev_path="/dev/sdf" }
+requests_data_6 = { req_host="172.18.123.71", dev_path="/dev/sdg" }
+requests_data_7 = { req_host="172.18.123.72", dev_path="/dev/sdb" }
+requests_data_8 = { req_host="172.18.123.72", dev_path="/dev/sdc" }
+requests_data_9 = { req_host="172.18.123.72", dev_path="/dev/sdd" }
+requests_data_10 = { req_host="172.18.123.72", dev_path="/dev/sde" }
+requests_data_11 = { req_host="172.18.123.72", dev_path="/dev/sdf" }
+requests_data_12 = { req_host="172.18.123.72", dev_path="/dev/sdg" }
+requests_data_13 = { req_host="172.18.123.73", dev_path="/dev/sdb" }
+requests_data_14 = { req_host="172.18.123.73", dev_path="/dev/sdc" }
+requests_data_15 = { req_host="172.18.123.73", dev_path="/dev/sdd" }
+requests_data_16 = { req_host="172.18.123.73", dev_path="/dev/sde" }
+requests_data_17 = { req_host="172.18.123.73", dev_path="/dev/sdf" }
+requests_data_18 = { req_host="172.18.123.73", dev_path="/dev/sdg" }
+
+
+[File_System_Status]
+interface_desc = "获取节点所有挂载点信息列表"
+interface_path = "/storage/file_system/status"
+requests_data_time = 3
+requests_data_1 = { req_host="172.18.123.71" }
+requests_data_2 = { req_host="172.18.123.72" }
+requests_data_3 = { req_host="172.18.123.73" }
+

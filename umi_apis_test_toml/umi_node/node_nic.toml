@@ -1,0 +1,135 @@
+# 需要准备5块网卡
+module = "Nic"
+interface_names = [
+    "Get_Device_List",
+    "Get_Device_Config",
+    "Get_Con_List",
+    "Get_Con_Config",
+    "Set_Ethernet_Connection",
+    "Set_Dns_Server",
+    "Up_Connection",
+    "Set_Bond_Connection",
+    "Up_Bond_Connection",
+    "Down_Bond_Connection",
+    "Delete_Bond_Connection",
+    "Set_Team_Connection",
+    "Up_Team_Connection",
+    "Down_Team_Connection",
+    "Delete_Team_Connection"
+]
+
+
+[Get_Device_List]
+interface_desc = "查看设备列表."
+interface_path = "/network/devices/get"
+interface_cmd = "/usr/bin/nmcli --terse --colors no --fields DEVICE device"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Get_Device_Config]
+interface_desc = "获取设备配置信息."
+interface_path = "/network/device/config/get"
+interface_cmd = "/usr/bin/nmcli --terse --colors no --fields NAME connection show"
+requests_data_time = 1
+requests_data_1 = { dev_name="ens256" }
+
+
+[Get_Con_List]
+interface_desc = "获取连接列表."
+interface_path = "/network/connections/get"
+interface_cmd = "/usr/bin/nmcli --terse --colors no --fields NAME connection show"
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Get_Con_Config]
+interface_desc = "获取一个连接列表，并返回一个字典，其中包含网络管理器看到的每个连接的配置."
+interface_path = "/network/connection/get"
+requests_data_time = 1
+requests_data_1 = { con_name="ens256" }
+
+
+[Set_Ethernet_Connection]
+interface_desc = "设置以太网连接."
+interface_path = "/network/connection/ethernet/set"
+requests_data_time = 1
+requests_data_1 = { con_name="ens256", ifname="ens256", ip_addr="10.10.10.11/16", gateway="10.10.1.1", dns_servers="114.114.114.114", search_domains="localhost.localdomain", mtu=1500 }
+
+
+[Set_Dns_Server]
+interface_desc = "设置DNS服务."
+interface_path = "/network/connection/dns/server/set"
+requests_data_time = 1
+requests_data_1 = { con_name="ens256", dns_servers="114.114.114.114", search_domains="localhost.localdomain" }
+
+
+[Up_Connection]
+interface_desc = "打开连接."
+interface_path = "/network/connection/up"
+requests_data_time = 1
+requests_data_1 = { con_name="ens256" }
+
+
+[Set_Bond_Connection]
+interface_desc = "设置Bond连接."
+interface_path = "/network/connection/bond/set"
+requests_data_time = 1
+requests_data_1 = { con_name="ens1001", bond_mode="balance-rr", members= ["ens193", "ens161"], ip_addr="10.10.10.12/16", gateway="10.10.1.1", dns_servers="114.114.114.114", search_domains="localhost.localdomain", mtu=1500 }
+
+
+[Up_Bond_Connection]
+interface_desc = "打开连接."
+interface_path = "/network/connection/up"
+requests_data_time = 1
+requests_data_1 = { con_name="ens1001" }
+
+
+[Down_Bond_Connection]
+interface_desc = "断开连接."
+interface_path = "/network/connection/down"
+interface_cmd_1 = "/usr/bin/nmcli --terse --colors no --fields NAME connection show"
+interface_cmd_2 = "/usr/bin/nmcli connection down ens1001"
+requests_data_time = 1
+requests_data_1 = { con_name="ens1001" }
+
+
+[Delete_Bond_Connection]
+interface_desc = "删除连接."
+interface_path = "/network/connection/delete"
+requests_data_time = 1
+requests_data_1 = { con_name="ens1001" }
+
+
+[Set_Team_Connection]
+interface_desc = "设置组连接."
+interface_path = "/network/connection/team/set"
+requests_data_time = 1
+requests_data_1 = { con_name="ens1001", team_mode="roundrobin", members= ["ens193", "ens161"], ip_addr="10.10.10.12/16", gateway="10.10.1.1", dns_servers="114.114.114.114", search_domains="localhost.localdomain", mtu=1500 }
+
+
+[Up_Team_Connection]
+interface_desc = "打开连接."
+interface_path = "/network/connection/up"
+requests_data_time = 1
+requests_data_1 = { con_name="ens1001" }
+
+
+[Down_Team_Connection]
+interface_desc = "断开连接."
+interface_path = "/network/connection/down"
+requests_data_time = 1
+requests_data_1 = { con_name="ens1001" }
+
+
+[Delete_Team_Connection]
+interface_desc = "删除连接."
+interface_path = "/network/connection/delete"
+requests_data_time = 1
+requests_data_1 = { con_name="ens1001" }
+
+
+# 参考链接
+# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_network_teaming_daemon_and_the_runners
+
+

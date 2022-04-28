@@ -1,0 +1,28 @@
+module = "CIFS"
+interface_names = [
+    "Cifs_User_Delete",
+    "Cifs_Share_Delete",
+    "Cifs_Service_Disable"
+]
+
+
+[Cifs_Service_Disable]
+interface_desc = "关闭CIFS服务"
+interface_path = "/cluster/cifs/service/disable"
+requests_data_time = 1
+requests_data_1 = { req_host="172.18.123.73" }
+
+
+[Cifs_User_Delete]
+interface_desc = "删除CIFS用户"
+interface_path = "/cluster/cifs/user/delete"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1", user="user-01" }
+
+
+[Cifs_Share_Delete]
+interface_desc = "删除CIFS共享"
+interface_path = "/cluster/cifs/share/delete"
+requests_data_time = 1
+requests_data_1 = { req_host="127.0.0.1" , name="share-01"}
+

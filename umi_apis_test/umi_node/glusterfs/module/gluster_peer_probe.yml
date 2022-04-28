@@ -1,0 +1,29 @@
+
+config:
+    name: "request methods testcase with functions"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+
+teststeps:
+-
+    name: Gluster Peer Probe host_ip_01
+    request:
+        method: POST
+        url: "/gluster/peer/probe"
+        json: {
+          "host": "$host_ip_01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Peer Probe host_ip_02
+    request:
+        method: POST
+        url: "/gluster/peer/probe"
+        json: {
+          "host": "$host_ip_02"
+        }
+    validate:
+        - eq: ["status_code", 200]

@@ -1,0 +1,59 @@
+
+config:
+    name: "Cluster Volume Thread Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host: ${P(umi_cluster/data/storage.csv)}
+    variables:
+        vol_name: vol-01
+
+teststeps:
+-
+    name: Cluster Volume Client IO Threads
+    request:
+        method: POST
+        url: "/cluster/volume/thread/client_io_threads"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "is_enable": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume IO Thread Count
+    request:
+        method: POST
+        url: "/cluster/volume/thread/io_thread_count"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "io_thread_count": 16
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Server Event Threads
+    request:
+        method: POST
+        url: "/cluster/volume/thread/server_event_threads"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "event_threads": 8
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Clinet Event Threads
+    request:
+        method: POST
+        url: "/cluster/volume/thread/client_event_threads"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "event_threads": 8
+        }
+    validate:
+        - eq: ["status_code", 200]
+

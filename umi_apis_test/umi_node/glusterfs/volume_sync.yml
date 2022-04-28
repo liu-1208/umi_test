@@ -1,0 +1,34 @@
+
+config:
+    name: "request methods testcase with functions"
+    # base_url: ${ENV(node_url)}
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        # 这里要求host02与host01是不同的节点
+        host01-host02: ${P(umi_node/data/storage.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+
+-
+    name: Gluster Volume Sync
+    request:
+        method: POST
+        url: "/gluster/volume/sync"
+        json: {
+          "hostname": "$host02",
+          "vol_name": "$vol_name"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+    
+

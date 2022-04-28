@@ -1,0 +1,22 @@
+config:
+    name: Iscsi Target Lun Map
+    base_url: ${ENV(API_URL)}
+    variables:
+        ret_code: 200
+        req_host: 127.0.0.1
+        iqn: iqn.2021-10.cluster-01.target-01
+        luns: ["lun-01"]
+
+teststeps:
+-
+    name: API
+    request:
+        url: /cluster/iscsi/target/lun_map
+        method: POST
+        json: ${gen_data(
+                req_host=$req_host,
+                iqn=$iqn,
+                luns=$luns
+            )}
+    validate:
+        - eq: ["status_code", $ret_code]

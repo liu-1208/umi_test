@@ -1,0 +1,66 @@
+module = "Local User"
+interface_names = [
+    "Local_User_List",
+    "Local_Group_List",
+    "Local_Group_Update",
+    "Local_User_Update",
+    "Local_User_Delete",
+    "Local_Group_Delete",
+]
+
+
+[Local_User_List]
+interface_desc = "获取所有用户信息."
+interface_path = "/user/user/list"
+interface_cmd = ""
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Local_Group_List]
+interface_desc = "获取所有组信息."
+interface_path = "/user/group/list"
+interface_cmd = ""
+requests_data_time = 1
+requests_data_1 = {}
+
+
+[Local_Group_Update]
+interface_desc = "设置组."
+interface_path = "/user/group/update"
+interface_cmd = "/usr/sbin/groupadd -g 1004 group-04"
+requests_data_time = 4
+requests_data_1 = { group="group-01", gid = 1001 }
+requests_data_2 = { group="group-02", gid = 1002 }
+requests_data_3 = { group="group-03", gid = 1003 }
+requests_data_4 = { group="group-04", gid = 1004 }
+
+
+[Local_User_Update]
+interface_desc = "设置用户."
+interface_path = "/user/user/update"
+interface_cmd = "/usr/sbin/useradd -s /bin/bash -u 1000 -g group-01 -G group-02,group-03,group-04 -M user-02"
+requests_data_time = 2
+requests_data_1 = { user="user-01", passwd="123456", group="group-01", uid=1000, shell= "/bin/bash", ex_groups=["group-02", "group-03", "group-04"] }
+requests_data_2 = { user="user-02", passwd="123456", group="group-01", uid=1001, shell= "/bin/bash", ex_groups=["group-02", "group-03", "group-04"] }
+
+
+[Local_User_Delete]
+interface_desc = "删除用户."
+interface_path = "/user/user/delete"
+interface_cmd = "/usr/sbin/userdel -f user_name"
+requests_data_time = 2
+requests_data_1 = { user="user-01" }
+requests_data_2 = { user="user-02" }
+
+
+[Local_Group_Delete]
+interface_desc = "删除组."
+interface_path = "/user/group/delete"
+interface_cmd = "/usr/sbin/groupdel group_name"
+requests_data_time = 4
+requests_data_1 = { group="group-01" }
+requests_data_2 = { group="group-02" }
+requests_data_3 = { group="group-03" }
+requests_data_4 = { group="group-04" }
+

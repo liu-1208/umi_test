@@ -1,0 +1,18 @@
+config:
+    name: Cluster Node Init
+    base_url: ${ENV(API_URL)}
+    variables:
+        ret_code: 200
+        req_host: 127.0.0.1
+
+teststeps:
+-
+    name: API
+    request:
+        url: /cluster/node/init
+        method: POST
+        json: ${gen_data(
+                req_host=$req_host
+            )}
+    validate:
+        - eq: ["status_code", $ret_code]

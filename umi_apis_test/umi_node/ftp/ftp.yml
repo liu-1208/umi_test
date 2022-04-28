@@ -1,0 +1,133 @@
+
+config:
+    name: "Node Ftp Test"
+    base_url: ${get_node_url()}
+    parameters:
+        sharename-username-password-path: ${P(umi_node/data/ftp.csv)}
+
+teststeps:
+-
+    name: Create Test Group
+    request:
+        method: POST
+        url: "/user/group/update"
+        json: {
+          "group": "$username", 
+          "gid": 8889
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Create Test User
+    request:
+        method: POST
+        url: "/user/user/update"
+        json: {
+          "user": "$username", 
+          "passwd": "$password",
+          "group":"$username",
+          "shell": "/sbin/nologin",
+          "uid": 8889,
+          "ex_groups": [ "$username" ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Smbftpd Service Enable
+    request:
+        method: POST
+        url: "/smbftpd/service/enable"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Smbftpd Service Status
+    request:
+        method: POST
+        url: "/smbftpd/service/status"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Smbftpd Cfg Update
+    request:
+        method: POST
+        url: "/smbftpd/cfg/update"
+        json: {
+            "ServerName": "xdfs",
+            "ShowProgramVersion": true,
+            "Port": 21,
+            "EmptyPasswdLogin": true,
+            "AnonymousLogin": true,
+            "DefaultMode": "SMB",
+            "ShareConfPath": "/usr/local/etc/smbftpd/smbftpd_share.conf",
+            "LogCommand": true,
+            "DoWtmpLog": true,
+            "DebugMode": true,
+            "TransferLog": "/var/log/smbftpd.log",
+            "RequireValidShell": false,
+            "SecurityPolicyMode": 1,
+            "SSLKeyFile": "/usr/local/etc/smbftpd/ssl.key/server.key",
+            "SSLCertFile": "/usr/local/etc/smbftpd/ssl.crt/server.crt"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Smbftpd Cfg List
+    request:
+        method: POST
+        url: "/smbftpd/cfg/list"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Smbftpd Scfg Update
+    request:
+        method: POST
+        url: "/smbftpd/scfg/update"
+        json: {
+            "share_name": "$sharename",
+            "path": "$path",
+            "rw": "$username",
+            "ro": "$username",
+            "browseable": true,
+            "disable_ls": "anonymous, @$username",
+            "disable_modify": "anonymous, @$username",
+            "disable_download": "anonymous, @$username"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Smbftpd Scfg List
+    request:
+        method: POST
+        url: "/smbftpd/scfg/list"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Smbftpd Scfg Delete
+    request:
+        method: POST
+        url: "/smbftpd/scfg/delete"
+        json: {
+            "share_name": "$sharename"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Smbftpd Service Disable
+    request:
+        method: POST
+        url: "/smbftpd/service/disable"
+        json: {}
+    validate:
+        - eq: ["status_code", 200]
+
+
+
+
+

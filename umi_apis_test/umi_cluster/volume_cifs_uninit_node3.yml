@@ -1,0 +1,35 @@
+config:
+    name: ${ENV(umi_cluster_test_title)}
+    base_url: ${ENV(umi_cluster_url)}
+
+teststeps:
+
+# 删除CIFS用户
+-
+    name: Cifs User Delete
+    request:
+        method: POST
+        url: "/cluster/cifs/user/delete"
+        json: {
+            "req_host": "127.0.0.1",
+            "user": "usr-01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+# 删除CIFS共享
+-
+    name: Cifs Share Delete
+    request:
+        method: POST
+        url: "/cluster/cifs/share/delete"
+        json: {
+            "req_host": "127.0.0.1",
+            "name": "share-01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+

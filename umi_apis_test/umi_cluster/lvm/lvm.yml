@@ -1,0 +1,160 @@
+
+config:
+    name: "Cluster Gsnap Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host-block01-block02: ${P(umi_cluster/data/storage.csv)}
+
+teststeps:
+-
+    name: Gsnap Pv Create
+    request:
+        method: POST
+        url: "/gsnap/pv/create"
+        json: {
+            "req_host": "$req_host",
+            "dev_names": [
+                "$block01",
+                "$block02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gsnap Vg Create
+    request:
+        method: POST
+        url: "/gsnap/vg/create"
+        json: {
+            "req_host": "$req_host",
+            "dev_names": [
+                "$block01",
+                "$block02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gsnap Pool Create
+    request:
+        method: POST
+        url: "/gsnap/pool/create"
+        json: {
+            "req_host": "$req_host",
+            "dev_names": [
+                "$block01",
+                "$block02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Gsnap Thin Create
+    request:
+        method: POST
+        url: "/gsnap/thin/create"
+        json: {
+            "req_host": "$req_host",
+            "dev_names": [
+                "$block01",
+                "$block02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gsnap Thin Remove
+    request:
+        method: POST
+        url: "/gsnap/thin/remove"
+        json: {
+            "req_host": "$req_host",
+            "dev_names": [
+                "$block01",
+                "$block02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gsnap Lv Remove
+    request:
+        method: POST
+        url: "/gsnap/lv/remove"
+        json: {
+            "req_host": "$req_host",
+            "dev_names": [
+                "$block01",
+                "$block02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gsnap Vg Remove
+    request:
+        method: POST
+        url: "/gsnap/vg/remove"
+        json: {
+            "req_host": "$req_host",
+            "dev_names": [
+                "$block01",
+                "$block02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gsnap Pv Remove
+    request:
+        method: POST
+        url: "/gsnap/pv/remove"
+        json: {
+            "req_host": "$req_host",
+            "dev_names": [
+                "$block01",
+                "$block02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gsnap Thin Lvm Enable
+    request:
+        method: POST
+        url: "/gsnap/thin_lvm/enable"
+        json: {
+            "req_host": "$req_host",
+            "dev_names": [
+                "$block01",
+                "$block02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gsnap Thin Lvm Disable
+    request:
+        method: POST
+        url: "/gsnap/thin_lvm/disable"
+        json: {
+            "req_host": "$req_host",
+            "dev_names": [
+                "$block01",
+                "$block02"
+            ]
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+
+
+
+
+
+
+
+
+
+

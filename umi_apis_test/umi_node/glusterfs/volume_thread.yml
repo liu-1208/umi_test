@@ -1,0 +1,63 @@
+
+config:
+    name: "Node Gluster Volume Thread Test"
+    base_url: ${get_node_url()}
+    parameters:
+        host_ip_01-host_ip_02: ${P(umi_node/data/glusterfs.csv)}
+        host01: ${P(umi_node/data/storage.csv)}
+    variables:
+        vol_name: pytest-vol-01
+
+teststeps:
+-
+    name: Gluster Volume Create Single
+    testcase: umi_node/glusterfs/module/volume_create_single.yml
+
+-
+    name: Gluster Volume Client Io Threads
+    request:
+        method: POST
+        url: "/gluster/volume/thread/client_io_threads"
+        json: {
+            "vol_name": "$vol_name",
+            "is_enable": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Io Thread Count
+    request:
+        method: POST
+        url: "/gluster/volume/thread/io_thread_count"
+        json: {
+            "vol_name": "$vol_name",
+            "io_thread_count": 16
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Server Event Threads
+    request:
+        method: POST
+        url: "/gluster/volume/thread/server_event_threads"
+        json: {
+            "vol_name": "$vol_name",
+            "event_threads": 8
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Client Event Threads
+    request:
+        method: POST
+        url: "/gluster/volume/thread/client_event_threads"
+        json: {
+            "vol_name": "$vol_name",
+            "event_threads": 8
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Gluster Volume Delete
+    testcase: umi_node/glusterfs/module/volume_delete.yml
+

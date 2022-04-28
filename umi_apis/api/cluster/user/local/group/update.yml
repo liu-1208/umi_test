@@ -1,0 +1,22 @@
+config:
+    name: Local Group Update
+    base_url: ${ENV(API_URL)}
+    variables:
+        ret_code: 200
+        req_host: 127.0.0.1
+        group: group-01
+        gid: --Empty--
+
+teststeps:
+-
+    name: API
+    request:
+        url: /cluster/user/local/group/update
+        method: POST
+        json: ${gen_data(
+                req_host=$req_host,
+                group=$group,
+                gid=$gid
+            )}
+    validate:
+        - eq: ["status_code", $ret_code]

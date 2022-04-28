@@ -1,0 +1,73 @@
+
+config:
+    name: "Cluster Storage Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host-block01: ${P(umi_cluster/data/storage.csv)}
+
+teststeps:
+-
+    name: Block Device Status
+    request:
+        method: POST
+        url: "/storage/block_device/status"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Block Device Init
+    request:
+        method: POST
+        url: "/storage/block_device/init"
+        json: {
+            "req_host": "$req_host",
+            "dev_path": "$block01",
+            "is_uuid": "12345678-1234-1234-1234-12345678900b"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Block Device Enable
+    request:
+        method: POST
+        url: "/storage/block_device/enable"
+        json: {
+            "req_host": "$req_host",
+            "dev_path": "$block01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Block File System Status
+    request:
+        method: POST
+        url: "/storage/file_system/status"
+        json: {
+            "req_host": "$req_host"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Block Device Disable
+    request:
+        method: POST
+        url: "/storage/block_device/disable"
+        json: {
+            "req_host": "$req_host",
+            "dev_path": "$block01"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Block Device Wipe
+    request:
+        method: POST
+        url: "/storage/block_device/wipe"
+        json: {
+            "req_host": "$req_host",
+            "dev_path": "$block01"
+        }
+    validate:
+        - eq: ["status_code", 200]

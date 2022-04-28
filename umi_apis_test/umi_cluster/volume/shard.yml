@@ -1,0 +1,59 @@
+
+config:
+    name: "Cluster Volume Shard Test"
+    base_url: ${get_cluster_url()}
+    parameters:
+        req_host: ${P(umi_cluster/data/storage.csv)}
+    variables:
+        vol_name: vol-01
+
+teststeps:
+-
+    name: Cluster Volume Shard
+    request:
+        method: POST
+        url: "/cluster/volume/shard"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "is_enable": true
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Shard Block Size
+    request:
+        method: POST
+        url: "/cluster/volume/shard/block_size"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "block_size": "64MB"
+        }
+    validate:
+        - eq: ["status_code", 200]
+-
+    name: Cluster Volume Shard Deletion Rate
+    request:
+        method: POST
+        url: "/cluster/volume/shard/deletion_rate"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "deletion_rate": 100
+        }
+    validate:
+        - eq: ["status_code", 200]
+
+-
+    name: Cluster Volume Shard
+    request:
+        method: POST
+        url: "/cluster/volume/shard"
+        json: {
+            "req_host": "$req_host",
+            "vol_name": "$vol_name",
+            "is_enable": false
+        }
+    validate:
+        - eq: ["status_code", 200]

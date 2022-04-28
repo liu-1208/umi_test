@@ -1,0 +1,34 @@
+module = "Posix"
+interface_names = [
+    "Posix_Share_List",
+    "Posix_Share_Update",
+    "Posix_Client_Status"
+]
+
+
+[Posix_Share_List]
+interface_desc = "获取Posix共享信息列表"
+interface_path = "/cluster/posix/share/list"
+requests_data_time = 1
+requests_data_1 = { req_host="172.18.123.73" }
+
+
+[Posix_Share_Update]
+interface_desc = "增加/更新Posix共享客户端访问权限"
+interface_path = "/cluster/posix/share/update"
+requests_data_time = 1
+[Posix_Share_Update.requests_data_1]
+req_host="172.18.123.73"
+vol_name="vol-01"
+share_dir="/vol-01/subdir-01"
+allow_hosts= ["127.0.0.1", "172.18.123.73/24"]
+deny_hosts=[]
+
+
+[Posix_Client_Status]
+interface_desc = "获取Posix共享的客户端连接状态列表"
+interface_path = "/cluster/posix/client/status"
+requests_data_time = 3
+requests_data_1 = { req_host="172.18.123.71", vol_name="vol-01" }
+requests_data_2 = { req_host="172.18.123.72", vol_name="vol-01" }
+requests_data_3 = { req_host="172.18.123.73", vol_name="vol-01" }
