@@ -1,0 +1,36 @@
+[[source]]
+name = "pypi"
+url = "https://mirrors.aliyun.com/pypi/simple/"
+verify_ssl = true
+
+
+[dev-packages]
+httprunner = ">3.0"
+pytest = "*"
+isort = "*"
+flake8 = "*"
+autopep8 = "*"
+pysnooper = "*"
+ipython = "*"
+
+
+[packages]
+sh = "*"
+arrow = "*"
+httpx = "*"
+allure-pytest = "*"
+pytest-ordering = "*"
+pytest-rerunfailures = "*"
+pytest-dependency = "*"
+paramiko = "*"
+pytest-html = "*"
+pytest-rerunfailures = "*"
+
+
+[requires]
+python_version = "3.6"
+
+
+[pipenv]
+allow_prereleases = true
+
